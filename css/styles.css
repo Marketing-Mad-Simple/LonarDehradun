@@ -280,8 +280,8 @@ button {
 
 #viewer-logo {
   display: block;
-  max-width: 150px;
-  max-height: 48px;
+  max-width: 300px;
+  max-height: 96px;
   object-fit: contain;
   object-position: left center;
   margin-bottom: 8px;
@@ -550,8 +550,8 @@ button {
   }
 
   #viewer-logo {
-    max-width: 105px;
-    max-height: 36px;
+    max-width: 180px;
+    max-height: 65px;
   }
 
   .logo-name {

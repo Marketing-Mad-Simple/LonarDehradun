@@ -10,6 +10,7 @@ let scenePillTimer = null;
 let arrowElements = [];
 let arrowRafId = null;
 
+
 /* =========================================================
    AUTO ROTATION
 ========================================================= */
@@ -58,16 +59,13 @@ function scheduleAutoRotate() {
   }
 
   autoRotateTimer = setTimeout(() => {
-
     if (!userIsInteracting && currentScene) {
       startAutoRotate();
     }
-
   }, AUTO_ROTATE_DELAY);
 }
 
 function registerUserInteraction() {
-
   userIsInteracting = true;
 
   stopAutoRotate();
@@ -75,11 +73,8 @@ function registerUserInteraction() {
   clearTimeout(autoRotateTimer);
 
   autoRotateTimer = setTimeout(() => {
-
     userIsInteracting = false;
-
     scheduleAutoRotate();
-
   }, 300);
 }
 
@@ -87,11 +82,6 @@ function registerUserInteraction() {
 /* =========================================================
    TEMPORARY COORDINATE DISPLAY
 ========================================================= */
-
-/*
-  This creates the coordinate display automatically.
-  Therefore index.html does NOT need to be edited.
-*/
 
 let coordinateDisplayRaf = null;
 
@@ -242,20 +232,16 @@ const MAX_TEX = (() => {
 
 
 function panoEl(id) {
-
   return document.getElementById(
     `pano-${id}`
   );
-
 }
 
 
 function inactiveId() {
-
   return activeId === "a"
     ? "b"
     : "a";
-
 }
 
 
@@ -274,7 +260,6 @@ function showOverlay(show) {
     "hidden",
     !show
   );
-
 }
 
 
@@ -294,7 +279,6 @@ function setQualityBadge(label) {
 
   badge.style.opacity =
     "1";
-
 }
 
 
@@ -345,12 +329,11 @@ function showScenePill(scene) {
       );
 
     }, 2200);
-
 }
 
 
 /* =========================================================
-   HOTSPOTS
+   PANNELLUM HOTSPOTS
 ========================================================= */
 
 function buildHotspots(
@@ -358,45 +341,16 @@ function buildHotspots(
   navigate
 ) {
 
-  return (
-    scene.hotspots || []
-  ).map(hotspot => ({
+  /*
+    We no longer use Pannellum's physical
+    hotspot positioning for navigation arrows.
 
-    type: "scene",
+    This function is retained so the viewer
+    architecture remains compatible with
+    future non-navigation hotspots.
+  */
 
-    pitch:
-      hotspot.pitch,
-
-    yaw:
-      hotspot.yaw,
-
-    text:
-      hotspot.text,
-
-    sceneId:
-      hotspot.target,
-
-    createTooltipFunc:
-      hotspotDiv => {
-
-        hotspotDiv.setAttribute(
-          "data-scene-id",
-          hotspot.target
-        );
-
-      },
-
-    clickHandlerFunc:
-      () => {
-
-        navigate(
-          hotspot.target
-        );
-
-      }
-
-  }));
-
+  return [];
 }
 
 
@@ -465,7 +419,6 @@ function bindHotspotTouch(
       }
 
       event.preventDefault();
-
       event.stopPropagation();
 
       const sceneId =
@@ -475,11 +428,7 @@ function bindHotspotTouch(
         hotspot.dataset.sceneId;
 
       if (sceneId) {
-
-        navigate(
-          sceneId
-        );
-
+        navigate(sceneId);
       }
 
     },
@@ -487,7 +436,6 @@ function bindHotspotTouch(
       passive: false
     }
   );
-
 }
 
 
@@ -517,14 +465,8 @@ function makeViewer(
 
     viewers[divId] =
       null;
-
   }
 
-
-  /*
-    Mouse / touch / pointer interaction
-    stops automatic rotation.
-  */
 
   el.addEventListener(
     "mousedown",
@@ -549,7 +491,6 @@ function makeViewer(
     pannellum.viewer(
       el,
       {
-
         type:
           "equirectangular",
 
@@ -591,18 +532,16 @@ function makeViewer(
 
         hotSpots:
           opts.hotSpots || []
-
       }
     );
 
 
   return viewers[divId];
-
 }
 
 
 /* =========================================================
-   CROSSFADE BETWEEN QUALITY LEVELS
+   QUALITY CROSSFADE
 ========================================================= */
 
 function crossfade(
@@ -647,17 +586,12 @@ function crossfade(
       nextId,
       nextUrl,
       {
-
         pitch,
         yaw,
         hfov,
 
         hotSpots:
-          buildHotspots(
-            scene,
-            navigate
-          )
-
+          []
       },
       navigate
     );
@@ -697,7 +631,6 @@ function crossfade(
           );
 
         } catch {}
-
       }
 
 
@@ -739,16 +672,13 @@ function crossfade(
           ) {
 
             try {
-
               viewers[
                 oldId
               ].destroy();
-
             } catch {}
 
             viewers[oldId] =
               null;
-
           }
 
 
@@ -762,7 +692,6 @@ function crossfade(
             false;
 
           scheduleAutoRotate();
-
 
           onDone();
 
@@ -778,7 +707,6 @@ function crossfade(
     "error",
     () => {}
   );
-
 }
 
 
@@ -791,16 +719,7 @@ export function loadScene(
   navigate
 ) {
 
-  /*
-    Start coordinate display.
-  */
-
   startCoordinateDisplay();
-
-
-  /*
-    Stop rotation from previous scene.
-  */
 
   stopAutoRotate();
 
@@ -852,10 +771,6 @@ export function loadScene(
   );
 
 
-  /*
-    Destroy previous viewers.
-  */
-
   ["a", "b"]
     .forEach(id => {
 
@@ -864,15 +779,13 @@ export function loadScene(
       ) {
 
         try {
-
           viewers[id].destroy();
-
         } catch {}
 
         viewers[id] =
           null;
-
       }
+
 
       const element =
         panoEl(id);
@@ -892,24 +805,13 @@ export function loadScene(
     "a";
 
 
-  /*
-    Load LOW quality.
-  */
-
   const viewer =
     makeViewer(
       "a",
-
       scene.images.low,
-
       {
-        hotSpots:
-          buildHotspots(
-            scene,
-            navigate
-          )
+        hotSpots: []
       },
-
       navigate
     );
 
@@ -952,20 +854,12 @@ export function loadScene(
       );
 
 
-      /*
-        MEDIUM quality.
-      */
-
       loadQuality(
         scene,
         scene.images.medium,
         "50%",
         navigate,
         () => {
-
-          /*
-            HIGH quality.
-          */
 
           loadQuality(
             scene,
@@ -1011,12 +905,11 @@ export function loadScene(
 
     }
   );
-
 }
 
 
 /* =========================================================
-   QUALITY LOADING
+   PROGRESSIVE QUALITY LOADING
 ========================================================= */
 
 function loadQuality(
@@ -1050,7 +943,6 @@ function loadQuality(
         onDone();
 
         return;
-
       }
 
 
@@ -1082,111 +974,268 @@ function loadQuality(
 
   img.src =
     url;
-
 }
 
 
 /* =========================================================
-   NAVIGATION ARROWS
+   YAW-BASED FLOATING ARROWS
 ========================================================= */
 
-function makeArrowSVG() {
+/*
+  Behaviour:
 
-  return `
-    <svg
-      class="arrow-svg"
-      viewBox="0 0 40 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+  - Arrow stays at a fixed vertical position.
+  - Horizontal position is determined by target yaw.
+  - 35% minimum opacity.
+  - Opacity increases as user turns toward target.
+  - Within ±5°:
+      100% opacity
+      clickable
+  - Outside ±5°:
+      not clickable
+  - No pitch is used.
+*/
 
-      <path
-        d="M20 3 L35 30 L26 26 L26 37 L14 37 L14 26 L5 30 Z"
-        fill="rgba(0,0,0,0.5)"
-        transform="translate(0.6,1.2)"
-      />
+const ARROW_BASE_OPACITY = 0.35;
+const ARROW_ACTIVE_OPACITY = 1.0;
 
-      <path
-        d="M20 3 L35 30 L26 26 L26 37 L14 37 L14 26 L5 30 Z"
-        fill="#bf9b60"
-      />
+const ARROW_CLICK_RANGE = 5;
 
-      <path
-        d="M20 3 L35 30 L26 26 L20 9 L14 26 L5 30 Z"
-        fill="#d4ae72"
-      />
+const ARROW_FADE_RANGE = 45;
 
-      <path
-        d="M20 8 L30 27 L25 25 Z"
-        fill="rgba(255,255,255,0.13)"
-      />
-
-      <path
-        d="M20 3 L35 30 L26 26 L26 37 L14 37 L14 26 L5 30 Z"
-        stroke="rgba(0,0,0,0.5)"
-        stroke-width="1"
-        stroke-linejoin="round"
-        fill="none"
-      />
-
-    </svg>
-  `;
-
-}
-
-
-function angleDiff(
-  from,
-  to
+function normalizeYaw(
+  yaw
 ) {
 
   return (
-    (
-      (to - from) %
-      360 +
-      540
-    ) %
+    ((yaw + 180) % 360 + 360) %
     360
   ) - 180;
 
 }
 
 
-function pitchToOpacity(
-  pitch
+function shortestYawDifference(
+  currentYaw,
+  targetYaw
 ) {
 
-  if (
-    pitch > 0
-  ) {
-    return 0;
+  let difference =
+    normalizeYaw(
+      targetYaw
+    ) -
+    normalizeYaw(
+      currentYaw
+    );
+
+
+  if (difference > 180) {
+    difference -= 360;
   }
 
-  return (
-    Math.min(
-      1,
-      (-pitch) / 10
-    ) * 0.95
-  );
+  if (difference < -180) {
+    difference += 360;
+  }
 
+
+  return difference;
 }
 
 
-function isHotspotInView(
-  yaw,
-  hotspotYaw,
-  hfov
+function createFloatingArrow(
+  hotspot,
+  navigate
 ) {
 
-  return (
-    Math.abs(
-      angleDiff(
-        yaw,
-        hotspotYaw
-      )
-    ) <
-    hfov / 2 + 10
+  const arrow =
+    document.createElement(
+      "button"
+    );
+
+  arrow.type =
+    "button";
+
+  arrow.className =
+    "floating-nav-arrow";
+
+
+  arrow.setAttribute(
+    "aria-label",
+    `Go to ${hotspot.text}`
   );
+
+
+  arrow.innerHTML = `
+    <div class="floating-arrow-icon">
+      ↑
+    </div>
+
+    <div class="floating-arrow-label">
+      ${hotspot.text}
+    </div>
+  `;
+
+
+  /*
+    IMPORTANT:
+    The arrow itself is initially
+    not clickable.
+  */
+
+  arrow.disabled =
+    true;
+
+
+  arrow.style.position =
+    "absolute";
+
+  arrow.style.top =
+    "72%";
+
+  arrow.style.left =
+    "50%";
+
+  arrow.style.transform =
+    "translate(-50%, -50%)";
+
+  arrow.style.zIndex =
+    "1000";
+
+  arrow.style.opacity =
+    ARROW_BASE_OPACITY;
+
+  arrow.style.pointerEvents =
+    "none";
+
+  arrow.style.transition =
+    "opacity 0.12s ease, left 0.08s linear";
+
+
+  arrow.addEventListener(
+    "click",
+    event => {
+
+      if (
+        arrow.disabled
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      registerUserInteraction();
+
+      navigate(
+        hotspot.target
+      );
+
+    }
+  );
+
+
+  return arrow;
+}
+
+
+function styleFloatingArrow(
+  arrow
+) {
+
+  arrow.style.background =
+    "transparent";
+
+  arrow.style.border =
+    "none";
+
+  arrow.style.padding =
+    "8px";
+
+  arrow.style.margin =
+    "0";
+
+  arrow.style.color =
+    "#ffffff";
+
+  arrow.style.cursor =
+    "pointer";
+
+  arrow.style.textAlign =
+    "center";
+
+  arrow.style.userSelect =
+    "none";
+
+  arrow.style.webkitTapHighlightColor =
+    "transparent";
+
+
+  const icon =
+    arrow.querySelector(
+      ".floating-arrow-icon"
+    );
+
+  if (icon) {
+
+    icon.style.width =
+      "46px";
+
+    icon.style.height =
+      "46px";
+
+    icon.style.borderRadius =
+      "50%";
+
+    icon.style.display =
+      "flex";
+
+    icon.style.alignItems =
+      "center";
+
+    icon.style.justifyContent =
+      "center";
+
+    icon.style.background =
+      "rgba(0,0,0,0.45)";
+
+    icon.style.border =
+      "1px solid rgba(255,255,255,0.55)";
+
+    icon.style.fontSize =
+      "25px";
+
+    icon.style.fontWeight =
+      "600";
+
+  }
+
+
+  const label =
+    arrow.querySelector(
+      ".floating-arrow-label"
+    );
+
+  if (label) {
+
+    label.style.marginTop =
+      "5px";
+
+    label.style.padding =
+      "4px 8px";
+
+    label.style.borderRadius =
+      "4px";
+
+    label.style.background =
+      "rgba(0,0,0,0.55)";
+
+    label.style.fontSize =
+      "12px";
+
+    label.style.whiteSpace =
+      "nowrap";
+
+  }
 
 }
 
@@ -1222,88 +1271,40 @@ function buildArrows(
 
     arrowRafId =
       null;
-
   }
 
 
-  if (
-    !scene.hotspots?.length
-  ) {
+  const hotspots =
+    scene.hotspots || [];
 
+
+  if (!hotspots.length) {
     return;
-
   }
 
 
-  scene.hotspots.forEach(
+  hotspots.forEach(
     hotspot => {
 
-      const el =
-        document.createElement(
-          "div"
+      const arrow =
+        createFloatingArrow(
+          hotspot,
+          navigate
         );
 
 
-      el.className =
-        "nav-arrow in-view";
-
-
-      el.innerHTML = `
-        ${makeArrowSVG()}
-
-        <div class="arrow-label">
-          ${hotspot.text}
-        </div>
-      `;
-
-
-      const label =
-        el.querySelector(
-          ".arrow-label"
-        );
-
-
-      el.addEventListener(
-        "click",
-        event => {
-
-          event.stopPropagation();
-
-          navigate(
-            hotspot.target
-          );
-
-        }
-      );
-
-
-      el.addEventListener(
-        "touchend",
-        event => {
-
-          event.preventDefault();
-
-          event.stopPropagation();
-
-          navigate(
-            hotspot.target
-          );
-
-        },
-        {
-          passive: false
-        }
+      styleFloatingArrow(
+        arrow
       );
 
 
       layer.appendChild(
-        el
+        arrow
       );
 
 
       arrowElements.push({
-        el,
-        label,
+        arrow,
         hotspot
       });
 
@@ -1311,12 +1312,11 @@ function buildArrows(
   );
 
 
-  updateArrows();
-
+  updateFloatingArrows();
 }
 
 
-function updateArrows() {
+function updateFloatingArrows() {
 
   const viewer =
     activeViewer();
@@ -1326,26 +1326,42 @@ function updateArrows() {
 
     arrowRafId =
       requestAnimationFrame(
-        updateArrows
+        updateFloatingArrows
       );
 
     return;
-
   }
 
 
-  let pitch = 0;
-  let yaw = 0;
-  let hfov = 100;
+  let currentYaw =
+    0;
 
 
   try {
 
-    pitch =
-      viewer.getPitch();
-
-    yaw =
+    currentYaw =
       viewer.getYaw();
+
+  } catch {}
+
+
+  /*
+    We use the viewer's horizontal
+    field of view to determine where
+    the arrow should appear.
+
+    The centre of the screen represents
+    the current yaw.
+
+    The edges represent approximately
+    half the horizontal field of view.
+  */
+
+  let hfov =
+    100;
+
+
+  try {
 
     hfov =
       viewer.getHfov();
@@ -1353,72 +1369,185 @@ function updateArrows() {
   } catch {}
 
 
-  const layer =
-    document.getElementById(
-      "arrow-layer"
-    );
-
-
-  if (layer) {
-
-    layer.style.opacity =
-      pitchToOpacity(
-        pitch
-      );
-
-  }
+  const halfHfov =
+    hfov / 2;
 
 
   arrowElements.forEach(
     ({
-      el,
-      label,
+      arrow,
       hotspot
     }) => {
 
-      const delta =
-        angleDiff(
-          yaw,
+      const difference =
+        shortestYawDifference(
+          currentYaw,
           hotspot.yaw
         );
 
 
-      const inView =
-        isHotspotInView(
-          yaw,
-          hotspot.yaw,
-          hfov
+      const absoluteDifference =
+        Math.abs(
+          difference
         );
 
 
-      el.style.transform =
-        `rotate(${delta}deg)`;
+      /*
+        Calculate horizontal screen
+        position.
+
+        Centre = 50%
+
+        Negative difference =
+        target is to the left.
+
+        Positive difference =
+        target is to the right.
+      */
+
+      let screenPosition =
+        50;
 
 
-      if (label) {
+      if (
+        absoluteDifference <=
+        halfHfov
+      ) {
 
-        label.style.transform =
-          `translateX(-50%) rotate(${-delta}deg)`;
+        screenPosition =
+          50 +
+          (
+            difference /
+            halfHfov
+          ) *
+          45;
+
+      } else {
+
+        /*
+          Target is outside the
+          current camera view.
+
+          Keep the arrow at the
+          corresponding edge.
+        */
+
+        screenPosition =
+          difference > 0
+            ? 94
+            : 6;
 
       }
 
 
-      el.classList.toggle(
-        "in-view",
-        inView
+      screenPosition =
+        Math.max(
+          6,
+          Math.min(
+            94,
+            screenPosition
+          )
+        );
+
+
+      arrow.style.left =
+        `${screenPosition}%`;
+
+
+      /*
+        Opacity behaviour:
+
+        >= 45° away:
+          35%
+
+        45° → 5°:
+          gradually increases
+
+        <= 5°:
+          100%
+      */
+
+      let opacity;
+
+
+      if (
+        absoluteDifference <=
+        ARROW_CLICK_RANGE
+      ) {
+
+        opacity =
+          ARROW_ACTIVE_OPACITY;
+
+      } else if (
+        absoluteDifference >=
+        ARROW_FADE_RANGE
+      ) {
+
+        opacity =
+          ARROW_BASE_OPACITY;
+
+      } else {
+
+        const progress =
+          (
+            ARROW_FADE_RANGE -
+            absoluteDifference
+          ) /
+          (
+            ARROW_FADE_RANGE -
+            ARROW_CLICK_RANGE
+          );
+
+
+        opacity =
+          ARROW_BASE_OPACITY +
+          (
+            ARROW_ACTIVE_OPACITY -
+            ARROW_BASE_OPACITY
+          ) *
+          progress;
+
+      }
+
+
+      arrow.style.opacity =
+        opacity.toFixed(2);
+
+
+      /*
+        Clickable only within ±5°.
+      */
+
+      const active =
+        absoluteDifference <=
+        ARROW_CLICK_RANGE;
+
+
+      arrow.disabled =
+        !active;
+
+
+      arrow.style.pointerEvents =
+        active
+          ? "auto"
+          : "none";
+
+
+      arrow.style.cursor =
+        active
+          ? "pointer"
+          : "default";
+
+
+      arrow.classList.toggle(
+        "active",
+        active
       );
 
 
-      el.classList.toggle(
-        "out-of-view",
-        !inView
-      );
-
-
-      el.classList.toggle(
-        "facing",
-        inView &&
-        Math.abs(delta) < 20
+      arrow.classList.toggle(
+        "inactive",
+        !active
       );
 
     }
@@ -1427,9 +1556,8 @@ function updateArrows() {
 
   arrowRafId =
     requestAnimationFrame(
-      updateArrows
+      updateFloatingArrows
     );
-
 }
 
 
@@ -1460,7 +1588,6 @@ export function resetViewer() {
 
     arrowRafId =
       null;
-
   }
 
 
@@ -1472,7 +1599,6 @@ export function resetViewer() {
 
     coordinateDisplayRaf =
       null;
-
   }
 
 
@@ -1483,9 +1609,7 @@ export function resetViewer() {
 
 
   if (coordinateDisplay) {
-
     coordinateDisplay.remove();
-
   }
 
 
@@ -1497,14 +1621,11 @@ export function resetViewer() {
       ) {
 
         try {
-
           viewers[id].destroy();
-
         } catch {}
 
         viewers[id] =
           null;
-
       }
 
 

@@ -19,6 +19,41 @@ function activeViewer() {
   return viewers[activeId];
 }
 
+/* ─────────────────────────────────────────
+   TEMPORARY PANNELLUM COORDINATE DISPLAY
+───────────────────────────────────────── */
+
+let coordinateDisplayRaf = null;
+
+function updateCoordinateDisplay() {
+  const viewer = activeViewer();
+  const display = document.getElementById("coordinates-display");
+
+  if (!viewer || !display) {
+    coordinateDisplayRaf =
+      requestAnimationFrame(updateCoordinateDisplay);
+    return;
+  }
+
+  try {
+    const yaw = viewer.getYaw();
+    const pitch = viewer.getPitch();
+
+    display.textContent =
+      `Yaw: ${yaw.toFixed(2)}°  |  Pitch: ${pitch.toFixed(2)}°`;
+  } catch {}
+
+  coordinateDisplayRaf =
+    requestAnimationFrame(updateCoordinateDisplay);
+}
+
+function startCoordinateDisplay() {
+  if (coordinateDisplayRaf) return;
+
+  coordinateDisplayRaf =
+    requestAnimationFrame(updateCoordinateDisplay);
+}
+
 function stopAutoRotate() {
   clearTimeout(autoRotateTimer);
   autoRotateTimer = null;

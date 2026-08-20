@@ -251,6 +251,10 @@ export const PROPERTIES = [
 
     scenes: [
 
+      /* =========================
+         EXTERIOR
+      ========================= */
+
       {
         id: "250-v2-elevation",
         group: "Exterior",
@@ -262,7 +266,26 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_d22cbdcaf5044fb98149b2cce47254e6~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: -20,
+            pitch: -5,
+            text: "Living Room",
+            target: "250-v2-living-room"
+          },
+          {
+            yaw: -126,
+            pitch: -5,
+            text: "Parking",
+            target: "250-v2-parking"
+          },
+          {
+            yaw: -175,
+            pitch: -5,
+            text: "Garden",
+            target: "250-v2-garden"
+          }
+        ]
       },
 
       {
@@ -276,7 +299,20 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_28354831f0414b959f8ee49927f43a82~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: 0,
+            pitch: -5,
+            text: "Pool",
+            target: "250-v2-pool"
+          },
+          {
+            yaw: 54,
+            pitch: -5,
+            text: "Elevation",
+            target: "250-v2-elevation"
+          }
+        ]
       },
 
       {
@@ -290,7 +326,26 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_8ae2aef697474f1a86eeabd4c9a8170b~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: 6,
+            pitch: -5,
+            text: "Elevation",
+            target: "250-v2-elevation"
+          },
+          {
+            yaw: -60,
+            pitch: -5,
+            text: "Parking",
+            target: "250-v2-parking"
+          },
+          {
+            yaw: -11,
+            pitch: -5,
+            text: "Pool",
+            target: "250-v2-pool"
+          }
+        ]
       },
 
       {
@@ -304,8 +359,26 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_a7d0b4481f04454d9d9b974c07cff711~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: -179,
+            pitch: -5,
+            text: "Parking",
+            target: "250-v2-parking"
+          },
+          {
+            yaw: 140,
+            pitch: -5,
+            text: "Garden",
+            target: "250-v2-garden"
+          }
+        ]
       },
+
+
+      /* =========================
+         INTERIOR
+      ========================= */
 
       {
         id: "250-v2-living-room",
@@ -318,7 +391,20 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_2b9ad3801c8341d182efc33e6756ee96~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: 0,
+            pitch: -5,
+            text: "Kitchen",
+            target: "250-v2-kitchen"
+          },
+          {
+            yaw: 90,
+            pitch: -5,
+            text: "Bedroom",
+            target: "250-v2-bedroom"
+          }
+        ]
       },
 
       {
@@ -332,7 +418,26 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_18fc8987ea88407f9d915f9c459b9201~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: -140,
+            pitch: -5,
+            text: "Living Room",
+            target: "250-v2-living-room"
+          },
+          {
+            yaw: 179,
+            pitch: -5,
+            text: "Elevation",
+            target: "250-v2-elevation"
+          },
+          {
+            yaw: 150,
+            pitch: -5,
+            text: "Bedroom",
+            target: "250-v2-bedroom"
+          }
+        ]
       },
 
       {
@@ -346,7 +451,20 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_81630298390b4f15a8d35e996d43ee12~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: 70,
+            pitch: -5,
+            text: "Living Room",
+            target: "250-v2-living-room"
+          },
+          {
+            yaw: 15.5,
+            pitch: -5,
+            text: "Washroom",
+            target: "250-v2-washroom"
+          }
+        ]
       },
 
       {
@@ -360,14 +478,21 @@ export const PROPERTIES = [
           high: "https://static.wixstatic.com/media/e01935_ce514a79d93b4401b4d74b245168b84a~mv2.jpg"
         },
 
-        hotspots: []
+        hotspots: [
+          {
+            yaw: 160,
+            pitch: -5,
+            text: "Bedroom",
+            target: "250-v2-bedroom"
+          }
+        ]
       }
     ]
   },
 
 
   /* =====================================================
-     FUTURE PROPERTIES
+     500 SQ. YD. — DESIGN 1
      ===================================================== */
 
   {
@@ -377,6 +502,11 @@ export const PROPERTIES = [
     scenes: []
   },
 
+
+  /* =====================================================
+     500 SQ. YD. — DESIGN 2
+     ===================================================== */
+
   {
     id: "500-v2",
     size: "500 Sq. Yd.",
@@ -384,12 +514,22 @@ export const PROPERTIES = [
     scenes: []
   },
 
+
+  /* =====================================================
+     1000 SQ. YD. — DESIGN 1
+     ===================================================== */
+
   {
     id: "1000-v1",
     size: "1000 Sq. Yd.",
     variant: "Design 1",
     scenes: []
   },
+
+
+  /* =====================================================
+     1000 SQ. YD. — DESIGN 2
+     ===================================================== */
 
   {
     id: "1000-v2",
@@ -402,7 +542,7 @@ export const PROPERTIES = [
 
 /* =====================================================
    PROPERTY HELPER
-   ===================================================== */
+===================================================== */
 
 export function getProperty(id) {
   return (

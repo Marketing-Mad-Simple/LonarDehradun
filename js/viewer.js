@@ -1,57 +1,27 @@
 let currentScene = null;
 let activeId = "a";
-const viewers = { a: null, b: null };
+
+const viewers = {
+  a: null,
+  b: null
+};
+
 let scenePillTimer = null;
 let arrowElements = [];
 let arrowRafId = null;
 
-/* ─────────────────────────────────────────
+/* =========================================================
    AUTO ROTATION
-───────────────────────────────────────── */
+========================================================= */
 
-const AUTO_ROTATE_DELAY = 6000; // 6 seconds
-const AUTO_ROTATE_SPEED = 4;    // degrees per second
+const AUTO_ROTATE_DELAY = 6000;
+const AUTO_ROTATE_SPEED = 4;
 
 let autoRotateTimer = null;
 let userIsInteracting = false;
 
 function activeViewer() {
   return viewers[activeId];
-}
-
-/* ─────────────────────────────────────────
-   TEMPORARY PANNELLUM COORDINATE DISPLAY
-───────────────────────────────────────── */
-
-let coordinateDisplayRaf = null;
-
-function updateCoordinateDisplay() {
-  const viewer = activeViewer();
-  const display = document.getElementById("coordinates-display");
-
-  if (!viewer || !display) {
-    coordinateDisplayRaf =
-      requestAnimationFrame(updateCoordinateDisplay);
-    return;
-  }
-
-  try {
-    const yaw = viewer.getYaw();
-    const pitch = viewer.getPitch();
-
-    display.textContent =
-      `Yaw: ${yaw.toFixed(2)}°  |  Pitch: ${pitch.toFixed(2)}°`;
-  } catch {}
-
-  coordinateDisplayRaf =
-    requestAnimationFrame(updateCoordinateDisplay);
-}
-
-function startCoordinateDisplay() {
-  if (coordinateDisplayRaf) return;
-
-  coordinateDisplayRaf =
-    requestAnimationFrame(updateCoordinateDisplay);
 }
 
 function stopAutoRotate() {
@@ -70,7 +40,9 @@ function stopAutoRotate() {
 function startAutoRotate() {
   const viewer = activeViewer();
 
-  if (!viewer || userIsInteracting) return;
+  if (!viewer || userIsInteracting) {
+    return;
+  }
 
   try {
     viewer.startAutoRotate(AUTO_ROTATE_SPEED);
@@ -81,171 +53,447 @@ function scheduleAutoRotate() {
   clearTimeout(autoRotateTimer);
   autoRotateTimer = null;
 
-  if (!currentScene) return;
+  if (!currentScene) {
+    return;
+  }
 
   autoRotateTimer = setTimeout(() => {
+
     if (!userIsInteracting && currentScene) {
       startAutoRotate();
     }
+
   }, AUTO_ROTATE_DELAY);
 }
 
 function registerUserInteraction() {
+
   userIsInteracting = true;
 
   stopAutoRotate();
 
   clearTimeout(autoRotateTimer);
 
-  /*
-    Wait briefly for the interaction to finish,
-    then begin a fresh inactivity countdown.
-  */
   autoRotateTimer = setTimeout(() => {
+
     userIsInteracting = false;
+
     scheduleAutoRotate();
+
   }, 300);
 }
 
-/* ─────────────────────────────────────────
+
+/* =========================================================
+   TEMPORARY COORDINATE DISPLAY
+========================================================= */
+
+/*
+  This creates the coordinate display automatically.
+  Therefore index.html does NOT need to be edited.
+*/
+
+let coordinateDisplayRaf = null;
+
+function createCoordinateDisplay() {
+
+  let display =
+    document.getElementById(
+      "coordinates-display"
+    );
+
+  if (display) {
+    return display;
+  }
+
+  display =
+    document.createElement("div");
+
+  display.id =
+    "coordinates-display";
+
+  display.textContent =
+    "Yaw: 0.00° | Pitch: 0.00°";
+
+  display.style.position =
+    "fixed";
+
+  display.style.top =
+    "20px";
+
+  display.style.left =
+    "50%";
+
+  display.style.transform =
+    "translateX(-50%)";
+
+  display.style.zIndex =
+    "999999";
+
+  display.style.padding =
+    "9px 14px";
+
+  display.style.background =
+    "rgba(0,0,0,0.8)";
+
+  display.style.color =
+    "#ffffff";
+
+  display.style.fontFamily =
+    "monospace";
+
+  display.style.fontSize =
+    "14px";
+
+  display.style.borderRadius =
+    "6px";
+
+  display.style.pointerEvents =
+    "none";
+
+  display.style.whiteSpace =
+    "nowrap";
+
+  document.body.appendChild(display);
+
+  return display;
+}
+
+function updateCoordinateDisplay() {
+
+  const viewer =
+    activeViewer();
+
+  const display =
+    createCoordinateDisplay();
+
+  if (!viewer) {
+
+    coordinateDisplayRaf =
+      requestAnimationFrame(
+        updateCoordinateDisplay
+      );
+
+    return;
+  }
+
+  try {
+
+    const yaw =
+      viewer.getYaw();
+
+    const pitch =
+      viewer.getPitch();
+
+    display.textContent =
+      `Yaw: ${yaw.toFixed(2)}° | Pitch: ${pitch.toFixed(2)}°`;
+
+  } catch {}
+
+  coordinateDisplayRaf =
+    requestAnimationFrame(
+      updateCoordinateDisplay
+    );
+}
+
+function startCoordinateDisplay() {
+
+  if (coordinateDisplayRaf) {
+    return;
+  }
+
+  coordinateDisplayRaf =
+    requestAnimationFrame(
+      updateCoordinateDisplay
+    );
+}
+
+
+/* =========================================================
    GENERAL HELPERS
-───────────────────────────────────────── */
+========================================================= */
 
 const MAX_TEX = (() => {
+
   try {
-    const c = document.createElement("canvas");
+
+    const canvas =
+      document.createElement("canvas");
+
     const gl =
-      c.getContext("webgl") ||
-      c.getContext("experimental-webgl");
+      canvas.getContext("webgl") ||
+      canvas.getContext(
+        "experimental-webgl"
+      );
 
     return gl
-      ? gl.getParameter(gl.MAX_TEXTURE_SIZE)
+      ? gl.getParameter(
+          gl.MAX_TEXTURE_SIZE
+        )
       : 4096;
+
   } catch {
+
     return 4096;
+
   }
+
 })();
 
+
 function panoEl(id) {
-  return document.getElementById(`pano-${id}`);
+
+  return document.getElementById(
+    `pano-${id}`
+  );
+
 }
+
 
 function inactiveId() {
-  return activeId === "a" ? "b" : "a";
+
+  return activeId === "a"
+    ? "b"
+    : "a";
+
 }
+
 
 function showOverlay(show) {
-  document
-    .getElementById("load-overlay")
-    .classList.toggle("hidden", !show);
+
+  const overlay =
+    document.getElementById(
+      "load-overlay"
+    );
+
+  if (!overlay) {
+    return;
+  }
+
+  overlay.classList.toggle(
+    "hidden",
+    !show
+  );
+
 }
+
 
 function setQualityBadge(label) {
-  const badge = document.getElementById("quality-badge");
 
-  badge.textContent = label;
-  badge.style.opacity = "1";
+  const badge =
+    document.getElementById(
+      "quality-badge"
+    );
+
+  if (!badge) {
+    return;
+  }
+
+  badge.textContent =
+    label;
+
+  badge.style.opacity =
+    "1";
+
 }
+
 
 function showScenePill(scene) {
-  document.getElementById("scene-group-display").textContent =
-    scene.group;
 
-  document.getElementById("scene-name-display").textContent =
-    scene.name;
+  const group =
+    document.getElementById(
+      "scene-group-display"
+    );
 
-  const pill = document.getElementById("scene-pill");
+  const name =
+    document.getElementById(
+      "scene-name-display"
+    );
 
-  pill.classList.add("show");
+  const pill =
+    document.getElementById(
+      "scene-pill"
+    );
 
-  clearTimeout(scenePillTimer);
+  if (group) {
+    group.textContent =
+      scene.group;
+  }
 
-  scenePillTimer = setTimeout(() => {
-    pill.classList.remove("show");
-  }, 2200);
+  if (name) {
+    name.textContent =
+      scene.name;
+  }
+
+  if (!pill) {
+    return;
+  }
+
+  pill.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    scenePillTimer
+  );
+
+  scenePillTimer =
+    setTimeout(() => {
+
+      pill.classList.remove(
+        "show"
+      );
+
+    }, 2200);
+
 }
 
-/* ─────────────────────────────────────────
-   HOTSPOTS
-───────────────────────────────────────── */
 
-function buildHotspots(scene, navigate) {
-  return (scene.hotspots || []).map(hotspot => ({
+/* =========================================================
+   HOTSPOTS
+========================================================= */
+
+function buildHotspots(
+  scene,
+  navigate
+) {
+
+  return (
+    scene.hotspots || []
+  ).map(hotspot => ({
+
     type: "scene",
 
-    pitch: hotspot.pitch,
-    yaw: hotspot.yaw,
+    pitch:
+      hotspot.pitch,
 
-    text: hotspot.text,
+    yaw:
+      hotspot.yaw,
 
-    sceneId: hotspot.target,
+    text:
+      hotspot.text,
 
-    createTooltipFunc: hotspotDiv => {
-      hotspotDiv.setAttribute(
-        "data-scene-id",
-        hotspot.target
-      );
-    },
+    sceneId:
+      hotspot.target,
 
-    clickHandlerFunc: () => {
-      navigate(hotspot.target);
-    }
+    createTooltipFunc:
+      hotspotDiv => {
+
+        hotspotDiv.setAttribute(
+          "data-scene-id",
+          hotspot.target
+        );
+
+      },
+
+    clickHandlerFunc:
+      () => {
+
+        navigate(
+          hotspot.target
+        );
+
+      }
+
   }));
+
 }
 
-function bindHotspotTouch(containerId, navigate) {
-  const el = panoEl(containerId);
 
-  if (!el || el._hotspotDelegated) return;
+function bindHotspotTouch(
+  containerId,
+  navigate
+) {
 
-  el._hotspotDelegated = true;
+  const el =
+    panoEl(containerId);
 
-  let touchMoved = false;
+  if (
+    !el ||
+    el._hotspotDelegated
+  ) {
+    return;
+  }
+
+  el._hotspotDelegated =
+    true;
+
+  let touchMoved =
+    false;
 
   el.addEventListener(
     "touchstart",
     () => {
-      touchMoved = false;
+
+      touchMoved =
+        false;
+
     },
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
   el.addEventListener(
     "touchmove",
     () => {
-      touchMoved = true;
+
+      touchMoved =
+        true;
+
     },
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
   el.addEventListener(
     "touchend",
     event => {
-      if (touchMoved) return;
+
+      if (touchMoved) {
+        return;
+      }
 
       const hotspot =
-        event.target.closest(".pnlm-hotspot");
+        event.target.closest(
+          ".pnlm-hotspot"
+        );
 
-      if (!hotspot) return;
+      if (!hotspot) {
+        return;
+      }
 
       event.preventDefault();
+
       event.stopPropagation();
 
       const sceneId =
-        hotspot.getAttribute("data-scene-id") ||
+        hotspot.getAttribute(
+          "data-scene-id"
+        ) ||
         hotspot.dataset.sceneId;
 
       if (sceneId) {
-        navigate(sceneId);
+
+        navigate(
+          sceneId
+        );
+
       }
+
     },
-    { passive: false }
+    {
+      passive: false
+    }
   );
+
 }
 
-/* ─────────────────────────────────────────
-   PANNELLUM VIEWER
-───────────────────────────────────────── */
+
+/* =========================================================
+   CREATE PANNELLUM VIEWER
+========================================================= */
 
 function makeViewer(
   divId,
@@ -253,20 +501,31 @@ function makeViewer(
   opts,
   navigate
 ) {
-  const el = panoEl(divId);
+
+  const el =
+    panoEl(divId);
+
+  if (!el) {
+    return null;
+  }
 
   if (viewers[divId]) {
+
     try {
       viewers[divId].destroy();
     } catch {}
 
-    viewers[divId] = null;
+    viewers[divId] =
+      null;
+
   }
 
+
   /*
-    Any direct interaction with the panorama
+    Mouse / touch / pointer interaction
     stops automatic rotation.
   */
+
   el.addEventListener(
     "mousedown",
     registerUserInteraction
@@ -275,7 +534,9 @@ function makeViewer(
   el.addEventListener(
     "touchstart",
     registerUserInteraction,
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
   el.addEventListener(
@@ -283,42 +544,66 @@ function makeViewer(
     registerUserInteraction
   );
 
-  viewers[divId] = pannellum.viewer(el, {
-    type: "equirectangular",
 
-    panorama,
+  viewers[divId] =
+    pannellum.viewer(
+      el,
+      {
 
-    autoLoad: true,
+        type:
+          "equirectangular",
 
-    showControls: false,
+        panorama:
+          panorama,
 
-    compass: false,
+        autoLoad:
+          true,
 
-    showFullscreenCtrl: false,
+        showControls:
+          false,
 
-    showZoomCtrl: false,
+        compass:
+          false,
 
-    mouseZoom: false,
+        showFullscreenCtrl:
+          false,
 
-    minHfov: 60,
+        showZoomCtrl:
+          false,
 
-    maxHfov: 120,
+        mouseZoom:
+          false,
 
-    hfov: opts.hfov || 100,
+        minHfov:
+          60,
 
-    pitch: opts.pitch || 0,
+        maxHfov:
+          120,
 
-    yaw: opts.yaw || 0,
+        hfov:
+          opts.hfov || 100,
 
-    hotSpots: opts.hotSpots || []
-  });
+        pitch:
+          opts.pitch || 0,
+
+        yaw:
+          opts.yaw || 0,
+
+        hotSpots:
+          opts.hotSpots || []
+
+      }
+    );
+
 
   return viewers[divId];
+
 }
 
-/* ─────────────────────────────────────────
-   IMAGE CROSSFADE
-───────────────────────────────────────── */
+
+/* =========================================================
+   CROSSFADE BETWEEN QUALITY LEVELS
+========================================================= */
 
 function crossfade(
   scene,
@@ -326,251 +611,413 @@ function crossfade(
   navigate,
   onDone
 ) {
-  if (currentScene?.id !== scene.id) return;
 
-  const av = activeViewer();
+  if (
+    currentScene?.id !==
+    scene.id
+  ) {
+    return;
+  }
 
-  const pitch = av
-    ? av.getPitch()
-    : 0;
+  const av =
+    activeViewer();
 
-  const yaw = av
-    ? av.getYaw()
-    : 0;
+  const pitch =
+    av
+      ? av.getPitch()
+      : 0;
 
-  const hfov = av
-    ? av.getHfov()
-    : 100;
+  const yaw =
+    av
+      ? av.getYaw()
+      : 0;
 
-  const nextId = inactiveId();
+  const hfov =
+    av
+      ? av.getHfov()
+      : 100;
 
-  const viewer = makeViewer(
-    nextId,
-    nextUrl,
-    {
-      pitch,
-      yaw,
-      hfov,
 
-      hotSpots:
-        buildHotspots(
-          scene,
-          navigate
-        )
-    },
-    navigate
-  );
+  const nextId =
+    inactiveId();
 
-  viewer.on("load", () => {
-    if (currentScene?.id !== scene.id) return;
 
-    const active = activeViewer();
+  const viewer =
+    makeViewer(
+      nextId,
+      nextUrl,
+      {
 
-    if (active) {
-      try {
-        viewer.setYaw(
-          active.getYaw()
-        );
+        pitch,
+        yaw,
+        hfov,
 
-        viewer.setPitch(
-          active.getPitch()
-        );
-      } catch {}
-    }
+        hotSpots:
+          buildHotspots(
+            scene,
+            navigate
+          )
 
-    panoEl(nextId)
-      .classList
-      .remove("hidden-pano");
+      },
+      navigate
+    );
 
-    panoEl(activeId)
-      .classList
-      .add("hidden-pano");
 
-    setTimeout(() => {
-      if (currentScene?.id !== scene.id) return;
+  if (!viewer) {
+    return;
+  }
 
-      const oldId = activeId;
 
-      activeId = nextId;
+  viewer.on(
+    "load",
+    () => {
 
-      if (viewers[oldId]) {
-        try {
-          viewers[oldId].destroy();
-        } catch {}
-
-        viewers[oldId] = null;
+      if (
+        currentScene?.id !==
+        scene.id
+      ) {
+        return;
       }
 
-      bindHotspotTouch(
-        activeId,
-        navigate
+
+      const active =
+        activeViewer();
+
+
+      if (active) {
+
+        try {
+
+          viewer.setYaw(
+            active.getYaw()
+          );
+
+          viewer.setPitch(
+            active.getPitch()
+          );
+
+        } catch {}
+
+      }
+
+
+      panoEl(nextId)
+        .classList
+        .remove(
+          "hidden-pano"
+        );
+
+
+      panoEl(activeId)
+        .classList
+        .add(
+          "hidden-pano"
+        );
+
+
+      setTimeout(
+        () => {
+
+          if (
+            currentScene?.id !==
+            scene.id
+          ) {
+            return;
+          }
+
+
+          const oldId =
+            activeId;
+
+
+          activeId =
+            nextId;
+
+
+          if (
+            viewers[oldId]
+          ) {
+
+            try {
+
+              viewers[
+                oldId
+              ].destroy();
+
+            } catch {}
+
+            viewers[oldId] =
+              null;
+
+          }
+
+
+          bindHotspotTouch(
+            activeId,
+            navigate
+          );
+
+
+          userIsInteracting =
+            false;
+
+          scheduleAutoRotate();
+
+
+          onDone();
+
+        },
+        650
       );
 
-      /*
-        Restart the inactivity timer after
-        the quality transition finishes.
-      */
-      userIsInteracting = false;
-      scheduleAutoRotate();
+    }
+  );
 
-      onDone();
 
-    }, 650);
-  });
+  viewer.on(
+    "error",
+    () => {}
+  );
 
-  viewer.on("error", () => {});
 }
 
-/* ─────────────────────────────────────────
+
+/* =========================================================
    LOAD SCENE
-───────────────────────────────────────── */
+========================================================= */
 
 export function loadScene(
   scene,
   navigate
 ) {
+
   /*
-    Stop rotation from the previous scene.
+    Start coordinate display.
   */
+
+  startCoordinateDisplay();
+
+
+  /*
+    Stop rotation from previous scene.
+  */
+
   stopAutoRotate();
 
-  userIsInteracting = false;
+  userIsInteracting =
+    false;
 
-  if (!scene) return;
+
+  if (!scene) {
+    return;
+  }
+
 
   if (
-    currentScene?.id === scene.id
+    currentScene?.id ===
+    scene.id
   ) {
     return;
   }
 
-  currentScene = scene;
 
-  showScenePill(scene);
+  currentScene =
+    scene;
+
+
+  showScenePill(
+    scene
+  );
+
 
   document
-    .querySelectorAll(".scene-pill-btn")
+    .querySelectorAll(
+      ".scene-pill-btn"
+    )
     .forEach(button => {
+
       button.classList.toggle(
         "active",
-        button.dataset.id === scene.id
+        button.dataset.id ===
+        scene.id
       );
+
     });
+
 
   showOverlay(true);
 
-  setQualityBadge("25%");
-
-  /*
-    Destroy the previous viewer layers.
-  */
-  ["a", "b"].forEach(id => {
-    if (viewers[id]) {
-      try {
-        viewers[id].destroy();
-      } catch {}
-
-      viewers[id] = null;
-    }
-
-    panoEl(id)
-      .classList
-      .add("hidden-pano");
-  });
-
-  activeId = "a";
-
-  /*
-    Load the low-resolution panorama first.
-  */
-  const viewer = makeViewer(
-    "a",
-
-    scene.images.low,
-
-    {
-      hotSpots:
-        buildHotspots(
-          scene,
-          navigate
-        )
-    },
-
-    navigate
+  setQualityBadge(
+    "25%"
   );
 
-  panoEl("a")
-    .classList
-    .remove("hidden-pano");
 
   /*
-    Once the first panorama is ready,
-    start the inactivity timer.
+    Destroy previous viewers.
   */
-  viewer.on("load", () => {
 
-    showOverlay(false);
+  ["a", "b"]
+    .forEach(id => {
 
-    setQualityBadge("25%");
+      if (
+        viewers[id]
+      ) {
 
-    userIsInteracting = false;
+        try {
 
-    scheduleAutoRotate();
+          viewers[id].destroy();
 
-    bindHotspotTouch(
-      "a",
-      navigate
-    );
+        } catch {}
 
-    buildArrows(
-      scene,
-      navigate
-    );
+        viewers[id] =
+          null;
 
-    /*
-      Load medium quality.
-    */
-    loadQuality(
-      scene,
-      scene.images.medium,
-      "50%",
-      navigate,
-      () => {
+      }
 
-        /*
-          Load high quality.
-        */
-        loadQuality(
-          scene,
-          scene.images.high,
-          "HD",
-          navigate,
-          () => {
+      const element =
+        panoEl(id);
 
-            setTimeout(() => {
-              document
-                .getElementById(
-                  "quality-badge"
-                )
-                .style.opacity = "0";
+      if (element) {
 
-            }, 2000);
-
-          }
+        element.classList.add(
+          "hidden-pano"
         );
 
       }
-    );
-  });
 
-  viewer.on("error", () => {
-    showOverlay(false);
-  });
+    });
+
+
+  activeId =
+    "a";
+
+
+  /*
+    Load LOW quality.
+  */
+
+  const viewer =
+    makeViewer(
+      "a",
+
+      scene.images.low,
+
+      {
+        hotSpots:
+          buildHotspots(
+            scene,
+            navigate
+          )
+      },
+
+      navigate
+    );
+
+
+  if (!viewer) {
+    return;
+  }
+
+
+  panoEl("a")
+    .classList
+    .remove(
+      "hidden-pano"
+    );
+
+
+  viewer.on(
+    "load",
+    () => {
+
+      showOverlay(false);
+
+      setQualityBadge(
+        "25%"
+      );
+
+      userIsInteracting =
+        false;
+
+      scheduleAutoRotate();
+
+      bindHotspotTouch(
+        "a",
+        navigate
+      );
+
+      buildArrows(
+        scene,
+        navigate
+      );
+
+
+      /*
+        MEDIUM quality.
+      */
+
+      loadQuality(
+        scene,
+        scene.images.medium,
+        "50%",
+        navigate,
+        () => {
+
+          /*
+            HIGH quality.
+          */
+
+          loadQuality(
+            scene,
+            scene.images.high,
+            "HD",
+            navigate,
+            () => {
+
+              setTimeout(
+                () => {
+
+                  const badge =
+                    document.getElementById(
+                      "quality-badge"
+                    );
+
+                  if (badge) {
+
+                    badge.style.opacity =
+                      "0";
+
+                  }
+
+                },
+                2000
+              );
+
+            }
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  viewer.on(
+    "error",
+    () => {
+
+      showOverlay(false);
+
+    }
+  );
+
 }
 
-/* ─────────────────────────────────────────
-   PROGRESSIVE QUALITY LOADING
-───────────────────────────────────────── */
+
+/* =========================================================
+   QUALITY LOADING
+========================================================= */
 
 function loadQuality(
   scene,
@@ -579,52 +1026,72 @@ function loadQuality(
   navigate,
   onDone
 ) {
+
   if (
-    currentScene?.id !== scene.id
+    currentScene?.id !==
+    scene.id
   ) {
     return;
   }
 
-  const img = new Image();
 
-  img.onload = () => {
+  const img =
+    new Image();
 
-    /*
-      Prevent loading textures that exceed
-      the device's maximum texture size.
-    */
-    if (
-      img.naturalWidth > MAX_TEX
-    ) {
-      onDone();
-      return;
-    }
 
-    crossfade(
-      scene,
-      url,
-      navigate,
-      () => {
+  img.onload =
+    () => {
 
-        setQualityBadge(label);
+      if (
+        img.naturalWidth >
+        MAX_TEX
+      ) {
 
         onDone();
+
+        return;
+
       }
-    );
-  };
 
-  img.onerror = () => {
-    onDone();
-  };
 
-  img.src = url;
+      crossfade(
+        scene,
+        url,
+        navigate,
+        () => {
+
+          setQualityBadge(
+            label
+          );
+
+          onDone();
+
+        }
+      );
+
+    };
+
+
+  img.onerror =
+    () => {
+
+      onDone();
+
+    };
+
+
+  img.src =
+    url;
+
 }
 
-/* ─────────────────────────────────────────
-   DIRECTIONAL FLOOR ARROWS
-───────────────────────────────────────── */
+
+/* =========================================================
+   NAVIGATION ARROWS
+========================================================= */
 
 function makeArrowSVG() {
+
   return `
     <svg
       class="arrow-svg"
@@ -664,21 +1131,34 @@ function makeArrowSVG() {
 
     </svg>
   `;
+
 }
+
 
 function angleDiff(
   from,
   to
 ) {
+
   return (
-    ((to - from) % 360 + 540) % 360
+    (
+      (to - from) %
+      360 +
+      540
+    ) %
+    360
   ) - 180;
+
 }
+
 
 function pitchToOpacity(
   pitch
 ) {
-  if (pitch > 0) {
+
+  if (
+    pitch > 0
+  ) {
     return 0;
   }
 
@@ -688,13 +1168,16 @@ function pitchToOpacity(
       (-pitch) / 10
     ) * 0.95
   );
+
 }
+
 
 function isHotspotInView(
   yaw,
   hotspotYaw,
   hfov
 ) {
+
   return (
     Math.abs(
       angleDiff(
@@ -704,34 +1187,53 @@ function isHotspotInView(
     ) <
     hfov / 2 + 10
   );
+
 }
+
 
 function buildArrows(
   scene,
   navigate
 ) {
+
   const layer =
     document.getElementById(
       "arrow-layer"
     );
 
-  layer.innerHTML = "";
 
-  arrowElements = [];
+  if (!layer) {
+    return;
+  }
+
+
+  layer.innerHTML =
+    "";
+
+  arrowElements =
+    [];
+
 
   if (arrowRafId) {
+
     cancelAnimationFrame(
       arrowRafId
     );
 
-    arrowRafId = null;
+    arrowRafId =
+      null;
+
   }
+
 
   if (
     !scene.hotspots?.length
   ) {
+
     return;
+
   }
+
 
   scene.hotspots.forEach(
     hotspot => {
@@ -741,8 +1243,10 @@ function buildArrows(
           "div"
         );
 
+
       el.className =
         "nav-arrow in-view";
+
 
       el.innerHTML = `
         ${makeArrowSVG()}
@@ -752,10 +1256,12 @@ function buildArrows(
         </div>
       `;
 
+
       const label =
         el.querySelector(
           ".arrow-label"
         );
+
 
       el.addEventListener(
         "click",
@@ -766,8 +1272,10 @@ function buildArrows(
           navigate(
             hotspot.target
           );
+
         }
       );
+
 
       el.addEventListener(
         "touchend",
@@ -780,28 +1288,39 @@ function buildArrows(
           navigate(
             hotspot.target
           );
+
         },
         {
           passive: false
         }
       );
 
-      layer.appendChild(el);
+
+      layer.appendChild(
+        el
+      );
+
 
       arrowElements.push({
         el,
         label,
         hotspot
       });
+
     }
   );
 
+
   updateArrows();
+
 }
 
+
 function updateArrows() {
+
   const viewer =
     activeViewer();
+
 
   if (!viewer) {
 
@@ -811,11 +1330,14 @@ function updateArrows() {
       );
 
     return;
+
   }
+
 
   let pitch = 0;
   let yaw = 0;
   let hfov = 100;
+
 
   try {
 
@@ -830,14 +1352,22 @@ function updateArrows() {
 
   } catch {}
 
-  document
-    .getElementById(
+
+  const layer =
+    document.getElementById(
       "arrow-layer"
-    )
-    .style.opacity =
+    );
+
+
+  if (layer) {
+
+    layer.style.opacity =
       pitchToOpacity(
         pitch
       );
+
+  }
+
 
   arrowElements.forEach(
     ({
@@ -852,6 +1382,7 @@ function updateArrows() {
           hotspot.yaw
         );
 
+
       const inView =
         isHotspotInView(
           yaw,
@@ -859,49 +1390,67 @@ function updateArrows() {
           hfov
         );
 
+
       el.style.transform =
         `rotate(${delta}deg)`;
 
-      label.style.transform =
-        `translateX(-50%) rotate(${-delta}deg)`;
+
+      if (label) {
+
+        label.style.transform =
+          `translateX(-50%) rotate(${-delta}deg)`;
+
+      }
+
 
       el.classList.toggle(
         "in-view",
         inView
       );
 
+
       el.classList.toggle(
         "out-of-view",
         !inView
       );
+
 
       el.classList.toggle(
         "facing",
         inView &&
         Math.abs(delta) < 20
       );
+
     }
   );
+
 
   arrowRafId =
     requestAnimationFrame(
       updateArrows
     );
+
 }
 
-/* ─────────────────────────────────────────
+
+/* =========================================================
    RESET VIEWER
-───────────────────────────────────────── */
+========================================================= */
 
 export function resetViewer() {
 
   stopAutoRotate();
 
-  userIsInteracting = false;
+  userIsInteracting =
+    false;
 
-  currentScene = null;
+  currentScene =
+    null;
 
-  arrowElements = [];
+
+  arrowElements =
+    [];
+
 
   if (arrowRafId) {
 
@@ -909,28 +1458,82 @@ export function resetViewer() {
       arrowRafId
     );
 
-    arrowRafId = null;
+    arrowRafId =
+      null;
+
   }
 
-  ["a", "b"].forEach(id => {
 
-    if (viewers[id]) {
+  if (coordinateDisplayRaf) {
 
-      try {
-        viewers[id].destroy();
-      } catch {}
+    cancelAnimationFrame(
+      coordinateDisplayRaf
+    );
 
-      viewers[id] = null;
-    }
+    coordinateDisplayRaf =
+      null;
 
-    panoEl(id)
-      .classList
-      .add("hidden-pano");
-  });
+  }
 
-  document
-    .getElementById(
+
+  const coordinateDisplay =
+    document.getElementById(
+      "coordinates-display"
+    );
+
+
+  if (coordinateDisplay) {
+
+    coordinateDisplay.remove();
+
+  }
+
+
+  ["a", "b"]
+    .forEach(id => {
+
+      if (
+        viewers[id]
+      ) {
+
+        try {
+
+          viewers[id].destroy();
+
+        } catch {}
+
+        viewers[id] =
+          null;
+
+      }
+
+
+      const element =
+        panoEl(id);
+
+
+      if (element) {
+
+        element.classList.add(
+          "hidden-pano"
+        );
+
+      }
+
+    });
+
+
+  const arrowLayer =
+    document.getElementById(
       "arrow-layer"
-    )
-    .innerHTML = "";
+    );
+
+
+  if (arrowLayer) {
+
+    arrowLayer.innerHTML =
+      "";
+
+  }
+
 }

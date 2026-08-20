@@ -50,13 +50,13 @@ export const PROPERTIES = [
 
         hotspots: [
           {
-            yaw: 23,
+            yaw: -34,
             pitch: -5,
             text: "Garden",
             target: "250-v1-garden"
           },
           {
-            yaw: 95,
+            yaw: -101,
             pitch: -5,
             text: "Elevation",
             target: "250-v1-elevation"
@@ -110,19 +110,20 @@ export const PROPERTIES = [
 
         hotspots: [
           {
-            yaw: 74,
+            yaw: -80,
             pitch: -5,
             text: "Garden",
             target: "250-v1-garden"
           },
           {
-            yaw: 160,
+            yaw: -170,
             pitch: -5,
             text: "Parking",
             target: "250-v1-parking"
           }
         ]
       },
+
 
       /* =========================
          INTERIOR
@@ -153,7 +154,7 @@ export const PROPERTIES = [
             target: "250-v1-elevation"
           },
           {
-            yaw: 70,
+            yaw: -70,
             pitch: -5,
             text: "Bedroom",
             target: "250-v1-bedroom"
@@ -201,7 +202,7 @@ export const PROPERTIES = [
 
         hotspots: [
           {
-            yaw: 110,
+            yaw: -120,
             pitch: -5,
             text: "Living Room",
             target: "250-v1-living-room"
@@ -366,7 +367,7 @@ export const PROPERTIES = [
 
 
   /* =====================================================
-     EMPTY PLACEHOLDERS FOR FUTURE PROPERTIES
+     FUTURE PROPERTIES
      ===================================================== */
 
   {
@@ -399,8 +400,15 @@ export const PROPERTIES = [
 ];
 
 
+/* =====================================================
+   PROPERTY HELPER
+   ===================================================== */
+
 export function getProperty(id) {
-  return PROPERTIES.find(
-    property => property.id === id
-  ) || null;
+  return (
+    PROPERTIES.find(
+      property =>
+        property.id === id
+    ) || null
+  );
 }

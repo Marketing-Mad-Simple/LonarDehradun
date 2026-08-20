@@ -1,4 +1,3 @@
-
 :root {
   --bg: #0a0a0a;
   --text: #f5f0e8;
@@ -37,6 +36,7 @@ button {
   display: none !important;
 }
 
+
 /* ─────────────────────────────────────────
    PROPERTY SELECTION
 ───────────────────────────────────────── */
@@ -46,8 +46,16 @@ button {
   inset: 0;
   overflow-y: auto;
   background:
-    radial-gradient(circle at 50% 15%, rgba(200,169,110,0.10), transparent 32%),
-    linear-gradient(180deg, #111 0%, #090909 100%);
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(200,169,110,0.10),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #111 0%,
+      #090909 100%
+    );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,12 +124,18 @@ button {
 .property-grid,
 .variant-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(
+    3,
+    minmax(0, 1fr)
+  );
   gap: 14px;
 }
 
 .variant-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
   max-width: 620px;
   margin: 0 auto;
 }
@@ -137,7 +151,10 @@ button {
   color: var(--text);
   cursor: pointer;
   text-align: left;
-  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background .2s ease;
 }
 
 .property-card:hover,
@@ -174,7 +191,10 @@ button {
 
 .text-button {
   position: absolute;
-  top: max(22px, env(safe-area-inset-top, 0px));
+  top: max(
+    22px,
+    env(safe-area-inset-top, 0px)
+  );
   left: 24px;
   border: 0;
   background: transparent;
@@ -187,6 +207,7 @@ button {
 .text-button:hover {
   color: var(--text);
 }
+
 
 /* ─────────────────────────────────────────
    VIEWER
@@ -244,7 +265,9 @@ button {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #load-wordmark {
@@ -253,6 +276,7 @@ button {
   color: rgba(245,240,232,0.7);
   text-transform: uppercase;
 }
+
 
 /* ─────────────────────────────────────────
    TOP BAR
@@ -268,8 +292,19 @@ button {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  padding: max(18px, env(safe-area-inset-top, 0px)) 22px 20px;
-  background: linear-gradient(to bottom, rgba(0,0,0,.72), transparent);
+  padding:
+    max(
+      18px,
+      env(safe-area-inset-top, 0px)
+    )
+    22px
+    20px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.72),
+      transparent
+    );
   pointer-events: none;
 }
 
@@ -353,6 +388,7 @@ button {
   color: var(--text);
 }
 
+
 /* ─────────────────────────────────────────
    SCENE LABEL + NAV
 ───────────────────────────────────────── */
@@ -396,8 +432,18 @@ button {
   right: 0;
   bottom: 0;
   z-index: 100;
-  padding: 35px 0 calc(12px + var(--safe-bottom));
-  background: linear-gradient(to top, rgba(0,0,0,.76), transparent);
+  padding:
+    35px
+    0
+    calc(
+      12px + var(--safe-bottom)
+    );
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.76),
+      transparent
+    );
   pointer-events: none;
 }
 
@@ -446,62 +492,180 @@ button {
   color: var(--text);
 }
 
+
 /* ─────────────────────────────────────────
-   ARROWS
+   YAW-BASED FLOATING NAVIGATION ARROWS
 ───────────────────────────────────────── */
+
+/*
+  IMPORTANT:
+
+  This layer is a true 2D overlay.
+
+  It covers the entire viewer and is NOT
+  positioned at the centre of the panorama.
+
+  Therefore Pannellum pitch has no effect
+  on the navigation arrows.
+*/
 
 #arrow-layer {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
   z-index: 70;
+
   pointer-events: none;
+
+  overflow: hidden;
 }
+
+
+/*
+  Individual navigation arrow.
+
+  JavaScript controls:
+  - left
+  - opacity
+  - pointer-events
+*/
 
 .nav-arrow {
   position: absolute;
-  left: -30px;
-  top: -90px;
-  width: 60px;
+
+  left: 50%;
+  top: 72%;
+
+  width: 80px;
   height: 90px;
-  transform-origin: 50% 100%;
-  pointer-events: auto;
-  cursor: pointer;
-  transition: opacity .2s ease, filter .2s ease;
+
+  transform:
+    translate(-50%, -50%);
+
+  pointer-events: none;
+
+  cursor: default;
+
+  opacity: .35;
+
+  border: none;
+  background: transparent;
+
+  padding: 8px;
+  margin: 0;
+
+  color: #ffffff;
+
+  text-align: center;
+
+  user-select: none;
+
+  -webkit-user-select: none;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  transition:
+    opacity .15s ease,
+    left .08s linear,
+    filter .15s ease;
 }
+
+
+/*
+  Inactive arrow.
+
+  Visible but cannot be clicked.
+*/
 
 .nav-arrow.out-of-view {
-  opacity: .28;
-  filter: grayscale(1);
+  opacity: .35;
+
   pointer-events: none;
+
+  cursor: default;
+
+  filter: none;
 }
 
+
+/*
+  Active arrow.
+
+  This class is applied when the
+  current yaw is within ±5° of
+  the target yaw.
+*/
+
 .nav-arrow.facing {
-  filter: drop-shadow(0 0 10px rgba(200,169,110,.65));
+  opacity: 1;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  filter:
+    drop-shadow(
+      0 0 10px
+      rgba(200,169,110,.65)
+    );
 }
+
+
+/*
+  Arrow graphic.
+*/
 
 .arrow-svg {
   width: 60px;
   height: 60px;
+
   display: block;
+
+  margin: 0 auto;
 }
+
+
+/*
+  Destination label.
+*/
 
 .arrow-label {
   position: absolute;
+
   left: 50%;
   top: 62px;
-  transform-origin: center;
-  transform: translateX(-50%);
+
+  transform:
+    translateX(-50%);
+
+  transform-origin:
+    center;
+
   width: max-content;
+
   max-width: 140px;
-  color: rgba(255,255,255,.85);
+
+  padding: 0;
+
+  color:
+    rgba(255,255,255,.85);
+
   font-size: 9px;
+
   letter-spacing: .5px;
+
   text-align: center;
-  text-shadow: 0 1px 4px #000;
+
+  text-shadow:
+    0 1px 4px #000;
+
+  white-space: nowrap;
 }
+
 
 /* ─────────────────────────────────────────
    PANNELLUM OVERRIDES
@@ -519,9 +683,20 @@ button {
   display: none !important;
 }
 
+
+/* ─────────────────────────────────────────
+   MOBILE
+───────────────────────────────────────── */
+
 @media (max-width: 700px) {
+
   .selection-screen {
-    padding: 8vh 18px calc(5vh + var(--safe-bottom));
+    padding:
+      8vh
+      18px
+      calc(
+        5vh + var(--safe-bottom)
+      );
   }
 
   .selection-brand {
@@ -585,7 +760,23 @@ button {
     font-size: 10px;
   }
 
+  /*
+    Slightly smaller arrow on mobile.
+  */
+
+  .nav-arrow {
+    top: 70%;
+    width: 72px;
+    height: 82px;
+  }
+
+  .arrow-svg {
+    width: 52px;
+    height: 52px;
+  }
+
   .arrow-label {
+    top: 54px;
     font-size: 8px;
     max-width: 110px;
   }
@@ -595,7 +786,14 @@ button {
   }
 }
 
-@media (orientation: landscape) and (max-height: 500px) {
+
+/* ─────────────────────────────────────────
+   LANDSCAPE MOBILE
+───────────────────────────────────────── */
+
+@media (orientation: landscape)
+  and (max-height: 500px) {
+
   .selection-screen {
     padding-top: 5vh;
     padding-bottom: 5vh;
@@ -618,23 +816,37 @@ button {
     min-height: 105px;
     padding: 18px;
   }
+
+  .nav-arrow {
+    top: 72%;
+  }
 }
 
-/* Temporary Pannellum coordinate display */
+
+/* ─────────────────────────────────────────
+   TEMPORARY PANNELLUM COORDINATE DISPLAY
+───────────────────────────────────────── */
 
 #coordinates-display {
-  position: absolute;
+  position: fixed;
+
   top: 20px;
   left: 50%;
-  transform: translateX(-50%);
+
+  transform:
+    translateX(-50%);
+
   z-index: 9999;
 
   padding: 8px 12px;
 
-  background: rgba(0, 0, 0, 0.75);
+  background:
+    rgba(0, 0, 0, 0.75);
+
   color: #ffffff;
 
   font-family: monospace;
+
   font-size: 13px;
 
   border-radius: 6px;

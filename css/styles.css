@@ -61,8 +61,8 @@ button {
 }
 
 .selection-brand img {
-  max-width: min(220px, 55vw);
-  max-height: 72px;
+  max-width: min(440px, 75vw);
+  max-height: 150px;
   object-fit: contain;
   margin-bottom: 18px;
 }

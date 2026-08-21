@@ -80,123 +80,6 @@ function registerUserInteraction() {
 
 
 /* =========================================================
-   TEMPORARY COORDINATE DISPLAY
-========================================================= */
-
-let coordinateDisplayRaf = null;
-
-function createCoordinateDisplay() {
-  let display =
-    document.getElementById(
-      "coordinates-display"
-    );
-
-  if (display) {
-    return display;
-  }
-
-  display =
-    document.createElement("div");
-
-  display.id =
-    "coordinates-display";
-
-  display.textContent =
-    "Yaw: 0.00° | Pitch: 0.00°";
-
-  display.style.position =
-    "fixed";
-
-  display.style.top =
-    "20px";
-
-  display.style.left =
-    "50%";
-
-  display.style.transform =
-    "translateX(-50%)";
-
-  display.style.zIndex =
-    "999999";
-
-  display.style.padding =
-    "9px 14px";
-
-  display.style.background =
-    "rgba(0,0,0,0.8)";
-
-  display.style.color =
-    "#ffffff";
-
-  display.style.fontFamily =
-    "monospace";
-
-  display.style.fontSize =
-    "14px";
-
-  display.style.borderRadius =
-    "6px";
-
-  display.style.pointerEvents =
-    "none";
-
-  display.style.whiteSpace =
-    "nowrap";
-
-  document.body.appendChild(
-    display
-  );
-
-  return display;
-}
-
-function updateCoordinateDisplay() {
-  const viewer =
-    activeViewer();
-
-  const display =
-    createCoordinateDisplay();
-
-  if (!viewer) {
-    coordinateDisplayRaf =
-      requestAnimationFrame(
-        updateCoordinateDisplay
-      );
-
-    return;
-  }
-
-  try {
-    const yaw =
-      viewer.getYaw();
-
-    const pitch =
-      viewer.getPitch();
-
-    display.textContent =
-      `Yaw: ${yaw.toFixed(2)}° | Pitch: ${pitch.toFixed(2)}°`;
-
-  } catch {}
-
-  coordinateDisplayRaf =
-    requestAnimationFrame(
-      updateCoordinateDisplay
-    );
-}
-
-function startCoordinateDisplay() {
-  if (coordinateDisplayRaf) {
-    return;
-  }
-
-  coordinateDisplayRaf =
-    requestAnimationFrame(
-      updateCoordinateDisplay
-    );
-}
-
-
-/* =========================================================
    GENERAL HELPERS
 ========================================================= */
 
@@ -563,8 +446,6 @@ export function loadScene(
   scene,
   navigate
 ) {
-  startCoordinateDisplay();
-
   stopAutoRotate();
 
   userIsInteracting =
@@ -1251,57 +1132,6 @@ export function resetViewer() {
     arrowRafId =
       null;
   }
-
-
-  if (coordinateDisplayRaf) {
-
-    cancelAnimationFrame(
-      coordinateDisplayRaf
-    );
-
-    coordinateDisplayRaf =
-      null;
-  }
-
-
-  const coordinateDisplay =
-    document.getElementById(
-      "coordinates-display"
-    );
-
-  if (coordinateDisplay) {
-    coordinateDisplay.remove();
-  }
-
-
-  ["a", "b"]
-    .forEach(id => {
-
-      if (
-        viewers[id]
-      ) {
-
-        try {
-          viewers[id].destroy();
-        } catch {}
-
-        viewers[id] =
-          null;
-      }
-
-
-      const element =
-        panoEl(id);
-
-      if (element) {
-
-        element.classList.add(
-          "hidden-pano"
-        );
-
-      }
-
-    });
 
 
   const arrowLayer =

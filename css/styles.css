@@ -684,6 +684,138 @@ button {
 }
 
 
+
+/* ─────────────────────────────────────────
+   MOBILE LANDSCAPE ORIENTATION PROMPT
+───────────────────────────────────────── */
+
+#orientation-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(200,169,110,0.12),
+      transparent 42%
+    ),
+    rgba(7,7,7,0.98);
+  color: var(--text);
+  text-align: center;
+}
+
+.orientation-card {
+  width: min(360px, 90vw);
+  padding: 30px 24px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.035);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  backdrop-filter: blur(18px);
+}
+
+.orientation-icon {
+  position: relative;
+  width: 92px;
+  height: 78px;
+  margin: 0 auto 22px;
+}
+
+.phone-icon {
+  position: absolute;
+  left: 18px;
+  top: 8px;
+  width: 35px;
+  height: 62px;
+  border: 2px solid var(--gold);
+  border-radius: 7px;
+  transform: rotate(-18deg);
+  opacity: 0.9;
+}
+
+.phone-icon::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 10px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--gold);
+}
+
+.phone-icon span {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.rotate-arrow {
+  position: absolute;
+  right: 4px;
+  top: 18px;
+  color: var(--gold-light);
+  font-size: 34px;
+  line-height: 1;
+  transform: rotate(-15deg);
+}
+
+.orientation-kicker {
+  color: rgba(200,169,110,0.82);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  margin-bottom: 9px;
+}
+
+.orientation-card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 31px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.orientation-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/*
+  Only phones/small touch devices in portrait
+  see the prompt. It automatically disappears
+  when the device rotates to landscape.
+*/
+
+@media
+  (pointer: coarse)
+  and (max-width: 700px)
+  and (orientation: portrait) {
+
+  #orientation-overlay {
+    display: flex;
+  }
+
+  /*
+    Prevent the underlying experience from
+    accidentally being interacted with.
+  */
+
+  body {
+    overflow: hidden;
+  }
+}
+
 /* ─────────────────────────────────────────
    MOBILE
 ───────────────────────────────────────── */
@@ -823,35 +955,3 @@ button {
 }
 
 
-/* ─────────────────────────────────────────
-   TEMPORARY PANNELLUM COORDINATE DISPLAY
-───────────────────────────────────────── */
-
-#coordinates-display {
-  position: fixed;
-
-  top: 20px;
-  left: 50%;
-
-  transform:
-    translateX(-50%);
-
-  z-index: 9999;
-
-  padding: 8px 12px;
-
-  background:
-    rgba(0, 0, 0, 0.75);
-
-  color: #ffffff;
-
-  font-family: monospace;
-
-  font-size: 13px;
-
-  border-radius: 6px;
-
-  pointer-events: none;
-
-  white-space: nowrap;
-}

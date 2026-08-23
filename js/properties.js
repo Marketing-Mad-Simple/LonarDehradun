@@ -555,6 +555,236 @@ export const PROPERTIES = [
 
 
   /* =====================================================
+     750 SQ. YD. — DESIGN 1
+     ===================================================== */
+
+  {
+    id: "750-v1",
+    size: "750 Sq. Yd.",
+    variant: "Design 1",
+
+    scenes: [
+      {
+        id: "750-v1-elevation",
+        group: "Exterior",
+        name: "Elevation",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_aeba1599d14a437588cc170458b2b115~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_2eef59e2dfe04e4b85da72d0c6cce7e0~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_0d49d0f993c74237a3e97a8c76b979ec~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-garden",
+        group: "Exterior",
+        name: "Garden",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_cf5111bc84894f1b86987b5d70c7fef7~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_4144dab488ca4e2aa81b13d424aa8719~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_774f633213cc4da295968ebd347b21b7~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-parking",
+        group: "Exterior",
+        name: "Parking",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_252f3118a05b43f785a23c20f684750e~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_3638cd4f3e724d7889859c3e91a1c8d5~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_4e1f022b7e4a4bd1a0d6c2b9f969083f~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-pool",
+        group: "Exterior",
+        name: "Pool",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_3b8fef7d4cfd4c77ac41aca017141669~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_642de3fb68174c18a6a7cf75c85ea315~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_4ed98a3e957748c682cb8049869817d6~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-bedroom",
+        group: "Interior",
+        name: "Bedroom",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_e0cd5d594fb44674bb261592781d53de~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_a9e85ab428204c1d9433ab0706480ef0~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_f68af9f4865e46218137659f2dcb6592~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-kitchen",
+        group: "Interior",
+        name: "Kitchen",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_19b715f49d6e4bb6bd290471aa289523~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_70256217bcb146aaaefe27a980932d52~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_d599a04542f140aa86871393ca11bc7b~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-bathroom",
+        group: "Interior",
+        name: "Bathroom",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_4146d053ea074bcc8b0b939bd0ce44d5~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_bcca0612e9504a14af29c265abf5a05d~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_8d64647451234b9eb175100366254fa5~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-dining-room",
+        group: "Interior",
+        name: "Dining Room",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_89db61a3bf0d4349b1e6353f263d689c~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_f03de8731a6842cba51538393ad70dd4~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_bd974a943a4a43f3bb36aa2fa2df82a5~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v1-living-room",
+        group: "Interior",
+        name: "Living Room",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_49db19dd4be44fadb9fe9c0d54fcadb3~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_cbdaa20d76c9466598f5e35c6e4b41c4~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_e6ebe11f707e4659bb80666169fe087e~mv2.jpg"
+        },
+        hotspots: []
+      }
+    ]
+  },
+
+
+  /* =====================================================
+     750 SQ. YD. — DESIGN 2
+     ===================================================== */
+
+  {
+    id: "750-v2",
+    size: "750 Sq. Yd.",
+    variant: "Design 2",
+
+    scenes: [
+      {
+        id: "750-v2-elevation",
+        group: "Exterior",
+        name: "Elevation",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_59357a6088324c289af915c7ec3f35e1~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_0429923293e545b09adee811edeb7c11~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_584e373fd27a4e38b025a4b3e6a686bd~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-entrance",
+        group: "Exterior",
+        name: "Entrance",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_94c873494d604e098444a7ee440ef1c4~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_430ff0dfa0f84ee8a05d2455ea66906a~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_26fbeeaefdd045d2a1e79ac0f8ef1929~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-garden",
+        group: "Exterior",
+        name: "Garden",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_dc44539b47884a4fb3f86844bbc5d6b3~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_fcbe0ff886a74d069d5e307b689c776c~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_a9c368a1c7fc412ea3730e14ad9c0023~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-pool",
+        group: "Exterior",
+        name: "Pool",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_084020fec0854330807f03c2aaa854a0~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_db17773d0ec44418b0e162b0bb57c82f~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_4041b4ccf5ac4789a9321f207ce32c86~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-living-room",
+        group: "Interior",
+        name: "Living Room",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_6331d05e17924c21929ea10032aef162~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_b83b7862b87c4b7b87d8dc5ef425c3ec~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_1b63eabed30044e689de40e819a13699~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-kitchen",
+        group: "Interior",
+        name: "Kitchen",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_1ec118a3f9a94a5d90960bf0da5d724b~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_01ab571990184c67bae09504f8c0d7f7~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_6a67b2459bf240949704ac4e61e2569c~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-bedroom",
+        group: "Interior",
+        name: "Bedroom",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_585b62e9cf554f178c71c3510db2b3ab~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_ffdb4e5203714ff99cbfbf3fef8a0aeb~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_455f22834f4f443fa63e4769b0f823a9~mv2.jpg"
+        },
+        hotspots: []
+      },
+
+      {
+        id: "750-v2-bathroom",
+        group: "Interior",
+        name: "Bathroom",
+        images: {
+          low: "https://static.wixstatic.com/media/e01935_59e23646ba2b4b4fac23b81bdf0f1285~mv2.jpg",
+          medium: "https://static.wixstatic.com/media/e01935_caa004be021f4b1682332207938385ce~mv2.jpg",
+          high: "https://static.wixstatic.com/media/e01935_f869ab4b00fa4dfb88e6086ed9853fea~mv2.jpg"
+        },
+        hotspots: []
+      }
+    ]
+  },
+
+
+  /* =====================================================
      1000 SQ. YD. — DESIGN 1
      ===================================================== */
 
@@ -853,238 +1083,6 @@ export const PROPERTIES = [
           { yaw: -3, pitch: -5, text: "Bathroom", target: "1000-v2-bathroom" },
           { yaw: -81, pitch: -5, text: "Bedroom", target: "1000-v2-bedroom" }
         ]
-      }
-    ]
-  },
-
-
-  /* =====================================================
-     750 SQ. YD. — DESIGN 1
-     Hotspots will be added once yaw coordinates are provided.
-     ===================================================== */
-
-  {
-    id: "750-v1",
-    size: "750 Sq. Yd.",
-    variant: "Design 1",
-
-    scenes: [
-      {
-        id: "750-v1-elevation",
-        group: "Exterior",
-        name: "Elevation",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_aeba1599d14a437588cc170458b2b115~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_2eef59e2dfe04e4b85da72d0c6cce7e0~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_0d49d0f993c74237a3e97a8c76b979ec~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-garden",
-        group: "Exterior",
-        name: "Garden",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_cf5111bc84894f1b86987b5d70c7fef7~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_4144dab488ca4e2aa81b13d424aa8719~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_774f633213cc4da295968ebd347b21b7~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-parking",
-        group: "Exterior",
-        name: "Parking",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_252f3118a05b43f785a23c20f684750e~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_3638cd4f3e724d7889859c3e91a1c8d5~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_4e1f022b7e4a4bd1a0d6c2b9f969083f~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-pool",
-        group: "Exterior",
-        name: "Pool",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_3b8fef7d4cfd4c77ac41aca017141669~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_642de3fb68174c18a6a7cf75c85ea315~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_4ed98a3e957748c682cb8049869817d6~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-bedroom",
-        group: "Interior",
-        name: "Bedroom",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_e0cd5d594fb44674bb261592781d53de~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_a9e85ab428204c1d9433ab0706480ef0~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_f68af9f4865e46218137659f2dcb6592~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-kitchen",
-        group: "Interior",
-        name: "Kitchen",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_19b715f49d6e4bb6bd290471aa289523~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_70256217bcb146aaaefe27a980932d52~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_d599a04542f140aa86871393ca11bc7b~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-bathroom",
-        group: "Interior",
-        name: "Bathroom",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_4146d053ea074bcc8b0b939bd0ce44d5~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_bcca0612e9504a14af29c265abf5a05d~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_8d64647451234b9eb175100366254fa5~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-dining-room",
-        group: "Interior",
-        name: "Dining Room",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_89db61a3bf0d4349b1e6353f263d689c~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_f03de8731a6842cba51538393ad70dd4~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_bd974a943a4a43f3bb36aa2fa2df82a5~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v1-living-room",
-        group: "Interior",
-        name: "Living Room",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_49db19dd4be44fadb9fe9c0d54fcadb3~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_cbdaa20d76c9466598f5e35c6e4b41c4~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_e6ebe11f707e4659bb80666169fe087e~mv2.jpg"
-        },
-        hotspots: []
-      }
-    ]
-  },
-
-
-  /* =====================================================
-     750 SQ. YD. — DESIGN 2
-     Hotspots will be added once yaw coordinates are provided.
-     ===================================================== */
-
-  {
-    id: "750-v2",
-    size: "750 Sq. Yd.",
-    variant: "Design 2",
-
-    scenes: [
-      {
-        id: "750-v2-elevation",
-        group: "Exterior",
-        name: "Elevation",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_59357a6088324c289af915c7ec3f35e1~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_0429923293e545b09adee811edeb7c11~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_584e373fd27a4e38b025a4b3e6a686bd~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-entrance",
-        group: "Exterior",
-        name: "Entrance",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_94c873494d604e098444a7ee440ef1c4~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_430ff0dfa0f84ee8a05d2455ea66906a~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_26fbeeaefdd045d2a1e79ac0f8ef1929~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-garden",
-        group: "Exterior",
-        name: "Garden",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_dc44539b47884a4fb3f86844bbc5d6b3~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_fcbe0ff886a74d069d5e307b689c776c~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_a9c368a1c7fc412ea3730e14ad9c0023~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-pool",
-        group: "Exterior",
-        name: "Pool",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_084020fec0854330807f03c2aaa854a0~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_db17773d0ec44418b0e162b0bb57c82f~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_4041b4ccf5ac4789a9321f207ce32c86~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-living-room",
-        group: "Interior",
-        name: "Living Room",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_6331d05e17924c21929ea10032aef162~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_b83b7862b87c4b7b87d8dc5ef425c3ec~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_1b63eabed30044e689de40e819a13699~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-kitchen",
-        group: "Interior",
-        name: "Kitchen",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_1ec118a3f9a94a5d90960bf0da5d724b~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_01ab571990184c67bae09504f8c0d7f7~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_6a67b2459bf240949704ac4e61e2569c~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-bedroom",
-        group: "Interior",
-        name: "Bedroom",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_585b62e9cf554f178c71c3510db2b3ab~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_ffdb4e5203714ff99cbfbf3fef8a0aeb~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_455f22834f4f443fa63e4769b0f823a9~mv2.jpg"
-        },
-        hotspots: []
-      },
-
-      {
-        id: "750-v2-bathroom",
-        group: "Interior",
-        name: "Bathroom",
-        images: {
-          low: "https://static.wixstatic.com/media/e01935_59e23646ba2b4b4fac23b81bdf0f1285~mv2.jpg",
-          medium: "https://static.wixstatic.com/media/e01935_caa004be021f4b1682332207938385ce~mv2.jpg",
-          high: "https://static.wixstatic.com/media/e01935_f869ab4b00fa4dfb88e6086ed9853fea~mv2.jpg"
-        },
-        hotspots: []
       }
     ]
   }

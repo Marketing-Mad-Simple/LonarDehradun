@@ -12,6 +12,115 @@ let arrowRafId = null;
 
 
 /* =========================================================
+   YAW FINDER — DEVELOPER MODE
+   Open the website with ?yaw=1 to enable it.
+
+   Example:
+   https://marketing-mad-simple.github.io/LonarDehradun/?yaw=1
+
+   Normal visitors will NEVER see this.
+========================================================= */
+
+const YAW_DEBUG_MODE =
+  new URLSearchParams(
+    window.location.search
+  ).get("yaw") === "1";
+
+let yawDebugElement = null;
+
+function createYawDebugDisplay() {
+
+  if (
+    !YAW_DEBUG_MODE ||
+    yawDebugElement
+  ) {
+    return;
+  }
+
+  yawDebugElement =
+    document.createElement("div");
+
+  yawDebugElement.id =
+    "yaw-debug-display";
+
+  yawDebugElement.style.cssText = `
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+
+    padding: 10px 16px;
+
+    background: rgba(0,0,0,0.85);
+    border: 1px solid rgba(191,155,96,0.9);
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    font-family:
+      Arial,
+      sans-serif;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+
+    backdrop-filter:
+      blur(8px);
+
+    box-shadow:
+      0 4px 18px
+      rgba(0,0,0,0.25);
+  `;
+
+  yawDebugElement.textContent =
+    "Yaw: 0°";
+
+  document.body.appendChild(
+    yawDebugElement
+  );
+}
+
+
+function updateYawDebugDisplay(
+  yaw
+) {
+
+  if (!YAW_DEBUG_MODE) {
+    return;
+  }
+
+  createYawDebugDisplay();
+
+  if (!yawDebugElement) {
+    return;
+  }
+
+  let normalizedYaw =
+    (
+      (
+        (
+          yaw + 180
+        ) % 360
+        + 360
+      ) % 360
+    ) - 180;
+
+  normalizedYaw =
+    Math.round(
+      normalizedYaw * 10
+    ) / 10;
+
+  yawDebugElement.textContent =
+    `Yaw: ${normalizedYaw}°`;
+}
+
+
+/* =========================================================
    AUTO ROTATION
 ========================================================= */
 
@@ -21,61 +130,110 @@ const AUTO_ROTATE_SPEED = 4;
 let autoRotateTimer = null;
 let userIsInteracting = false;
 
+
 function activeViewer() {
   return viewers[activeId];
 }
 
-function stopAutoRotate() {
-  clearTimeout(autoRotateTimer);
-  autoRotateTimer = null;
 
-  const viewer = activeViewer();
+function stopAutoRotate() {
+
+  clearTimeout(
+    autoRotateTimer
+  );
+
+  autoRotateTimer =
+    null;
+
+  const viewer =
+    activeViewer();
 
   if (viewer) {
+
     try {
       viewer.stopAutoRotate();
     } catch {}
+
   }
 }
 
-function startAutoRotate() {
-  const viewer = activeViewer();
 
-  if (!viewer || userIsInteracting) {
+function startAutoRotate() {
+
+  const viewer =
+    activeViewer();
+
+  if (
+    !viewer ||
+    userIsInteracting
+  ) {
     return;
   }
 
   try {
-    viewer.startAutoRotate(AUTO_ROTATE_SPEED);
+
+    viewer.startAutoRotate(
+      AUTO_ROTATE_SPEED
+    );
+
   } catch {}
+
 }
 
+
 function scheduleAutoRotate() {
-  clearTimeout(autoRotateTimer);
-  autoRotateTimer = null;
+
+  clearTimeout(
+    autoRotateTimer
+  );
+
+  autoRotateTimer =
+    null;
 
   if (!currentScene) {
     return;
   }
 
-  autoRotateTimer = setTimeout(() => {
-    if (!userIsInteracting && currentScene) {
-      startAutoRotate();
-    }
-  }, AUTO_ROTATE_DELAY);
+  autoRotateTimer =
+    setTimeout(
+      () => {
+
+        if (
+          !userIsInteracting &&
+          currentScene
+        ) {
+          startAutoRotate();
+        }
+
+      },
+      AUTO_ROTATE_DELAY
+    );
 }
 
+
 function registerUserInteraction() {
-  userIsInteracting = true;
+
+  userIsInteracting =
+    true;
 
   stopAutoRotate();
 
-  clearTimeout(autoRotateTimer);
+  clearTimeout(
+    autoRotateTimer
+  );
 
-  autoRotateTimer = setTimeout(() => {
-    userIsInteracting = false;
-    scheduleAutoRotate();
-  }, 300);
+  autoRotateTimer =
+    setTimeout(
+      () => {
+
+        userIsInteracting =
+          false;
+
+        scheduleAutoRotate();
+
+      },
+      300
+    );
 }
 
 
@@ -84,12 +242,18 @@ function registerUserInteraction() {
 ========================================================= */
 
 const MAX_TEX = (() => {
+
   try {
+
     const canvas =
-      document.createElement("canvas");
+      document.createElement(
+        "canvas"
+      );
 
     const gl =
-      canvas.getContext("webgl") ||
+      canvas.getContext(
+        "webgl"
+      ) ||
       canvas.getContext(
         "experimental-webgl"
       );
@@ -101,26 +265,34 @@ const MAX_TEX = (() => {
       : 4096;
 
   } catch {
+
     return 4096;
+
   }
+
 })();
 
 
 function panoEl(id) {
+
   return document.getElementById(
     `pano-${id}`
   );
+
 }
 
 
 function inactiveId() {
+
   return activeId === "a"
     ? "b"
     : "a";
+
 }
 
 
 function showOverlay(show) {
+
   const overlay =
     document.getElementById(
       "load-overlay"
@@ -134,10 +306,12 @@ function showOverlay(show) {
     "hidden",
     !show
   );
+
 }
 
 
 function setQualityBadge(label) {
+
   const badge =
     document.getElementById(
       "quality-badge"
@@ -152,10 +326,12 @@ function setQualityBadge(label) {
 
   badge.style.opacity =
     "1";
+
 }
 
 
 function showScenePill(scene) {
+
   const group =
     document.getElementById(
       "scene-group-display"
@@ -172,13 +348,17 @@ function showScenePill(scene) {
     );
 
   if (group) {
+
     group.textContent =
       scene.group;
+
   }
 
   if (name) {
+
     name.textContent =
       scene.name;
+
   }
 
   if (!pill) {
@@ -194,11 +374,17 @@ function showScenePill(scene) {
   );
 
   scenePillTimer =
-    setTimeout(() => {
-      pill.classList.remove(
-        "show"
-      );
-    }, 2200);
+    setTimeout(
+      () => {
+
+        pill.classList.remove(
+          "show"
+        );
+
+      },
+      2200
+    );
+
 }
 
 
@@ -212,6 +398,7 @@ function makeViewer(
   opts,
   navigate
 ) {
+
   const el =
     panoEl(divId);
 
@@ -220,13 +407,16 @@ function makeViewer(
   }
 
   if (viewers[divId]) {
+
     try {
       viewers[divId].destroy();
     } catch {}
 
     viewers[divId] =
       null;
+
   }
+
 
   el.addEventListener(
     "mousedown",
@@ -246,10 +436,12 @@ function makeViewer(
     registerUserInteraction
   );
 
+
   viewers[divId] =
     pannellum.viewer(
       el,
       {
+
         type:
           "equirectangular",
 
@@ -289,11 +481,15 @@ function makeViewer(
         yaw:
           opts.yaw || 0,
 
-        hotSpots: []
+        hotSpots:
+          []
+
       }
     );
 
+
   return viewers[divId];
+
 }
 
 
@@ -307,12 +503,14 @@ function crossfade(
   navigate,
   onDone
 ) {
+
   if (
     currentScene?.id !==
     scene.id
   ) {
     return;
   }
+
 
   const av =
     activeViewer();
@@ -332,8 +530,10 @@ function crossfade(
       ? av.getHfov()
       : 100;
 
+
   const nextId =
     inactiveId();
+
 
   const viewer =
     makeViewer(
@@ -347,9 +547,11 @@ function crossfade(
       navigate
     );
 
+
   if (!viewer) {
     return;
   }
+
 
   viewer.on(
     "load",
@@ -362,11 +564,15 @@ function crossfade(
         return;
       }
 
+
       const active =
         activeViewer();
 
+
       if (active) {
+
         try {
+
           viewer.setYaw(
             active.getYaw()
           );
@@ -374,8 +580,11 @@ function crossfade(
           viewer.setPitch(
             active.getPitch()
           );
+
         } catch {}
+
       }
+
 
       panoEl(nextId)
         .classList
@@ -383,11 +592,13 @@ function crossfade(
           "hidden-pano"
         );
 
+
       panoEl(activeId)
         .classList
         .add(
           "hidden-pano"
         );
+
 
       setTimeout(
         () => {
@@ -399,15 +610,19 @@ function crossfade(
             return;
           }
 
+
           const oldId =
             activeId;
+
 
           activeId =
             nextId;
 
+
           if (
             viewers[oldId]
           ) {
+
             try {
               viewers[
                 oldId
@@ -416,25 +631,32 @@ function crossfade(
 
             viewers[oldId] =
               null;
+
           }
+
 
           userIsInteracting =
             false;
 
+
           scheduleAutoRotate();
+
 
           onDone();
 
         },
         650
       );
+
     }
   );
+
 
   viewer.on(
     "error",
     () => {}
   );
+
 }
 
 
@@ -446,14 +668,17 @@ export function loadScene(
   scene,
   navigate
 ) {
+
   stopAutoRotate();
 
   userIsInteracting =
     false;
 
+
   if (!scene) {
     return;
   }
+
 
   if (
     currentScene?.id ===
@@ -462,59 +687,80 @@ export function loadScene(
     return;
   }
 
+
   currentScene =
     scene;
+
 
   showScenePill(
     scene
   );
 
+
   document
     .querySelectorAll(
       ".scene-pill-btn"
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-        "active",
-        button.dataset.id ===
-        scene.id
-      );
+        button.classList.toggle(
+          "active",
+          button.dataset.id ===
+          scene.id
+        );
 
-    });
+      }
+    );
 
-  showOverlay(true);
+
+  showOverlay(
+    true
+  );
+
 
   setQualityBadge(
     "25%"
   );
 
+
   ["a", "b"]
-    .forEach(id => {
+    .forEach(
+      id => {
 
-      if (
-        viewers[id]
-      ) {
-        try {
-          viewers[id].destroy();
-        } catch {}
+        if (
+          viewers[id]
+        ) {
 
-        viewers[id] =
-          null;
+          try {
+            viewers[id].destroy();
+          } catch {}
+
+          viewers[id] =
+            null;
+
+        }
+
+
+        const element =
+          panoEl(id);
+
+
+        if (element) {
+
+          element.classList.add(
+            "hidden-pano"
+          );
+
+        }
+
       }
+    );
 
-      const element =
-        panoEl(id);
-
-      if (element) {
-        element.classList.add(
-          "hidden-pano"
-        );
-      }
-    });
 
   activeId =
     "a";
+
 
   const viewer =
     makeViewer(
@@ -524,9 +770,11 @@ export function loadScene(
       navigate
     );
 
+
   if (!viewer) {
     return;
   }
+
 
   panoEl("a")
     .classList
@@ -534,25 +782,33 @@ export function loadScene(
       "hidden-pano"
     );
 
+
   viewer.on(
     "load",
     () => {
 
-      showOverlay(false);
+      showOverlay(
+        false
+      );
+
 
       setQualityBadge(
         "25%"
       );
 
+
       userIsInteracting =
         false;
 
+
       scheduleAutoRotate();
+
 
       buildArrows(
         scene,
         navigate
       );
+
 
       loadQuality(
         scene,
@@ -577,8 +833,10 @@ export function loadScene(
                     );
 
                   if (badge) {
+
                     badge.style.opacity =
                       "0";
+
                   }
 
                 },
@@ -590,15 +848,22 @@ export function loadScene(
 
         }
       );
+
     }
   );
+
 
   viewer.on(
     "error",
     () => {
-      showOverlay(false);
+
+      showOverlay(
+        false
+      );
+
     }
   );
+
 }
 
 
@@ -613,6 +878,7 @@ function loadQuality(
   navigate,
   onDone
 ) {
+
   if (
     currentScene?.id !==
     scene.id
@@ -620,8 +886,10 @@ function loadQuality(
     return;
   }
 
+
   const img =
     new Image();
+
 
   img.onload =
     () => {
@@ -630,9 +898,13 @@ function loadQuality(
         img.naturalWidth >
         MAX_TEX
       ) {
+
         onDone();
+
         return;
+
       }
+
 
       crossfade(
         scene,
@@ -648,15 +920,21 @@ function loadQuality(
 
         }
       );
+
     };
+
 
   img.onerror =
     () => {
+
       onDone();
+
     };
+
 
   img.src =
     url;
+
 }
 
 
@@ -678,24 +956,28 @@ const ARROW_FADE_RANGE =
 
 
 /*
-  Convert any yaw into
-  -180° to +180°.
+  Convert yaw to:
+  -180° → +180°
 */
 
-function normalizeYaw(yaw) {
+function normalizeYaw(
+  yaw
+) {
 
   return (
-    ((yaw + 180) % 360 + 360) %
-    360
+    (
+      (
+        yaw + 180
+      ) % 360
+      + 360
+    ) % 360
   ) - 180;
 
 }
 
 
 /*
-  Find the shortest angular
-  difference between the current
-  direction and the target.
+  Shortest angular difference.
 */
 
 function getYawDifference(
@@ -711,20 +993,37 @@ function getYawDifference(
       currentYaw
     );
 
-  if (difference > 180) {
-    difference -= 360;
+
+  if (
+    difference >
+    180
+  ) {
+
+    difference -=
+      360;
+
   }
 
-  if (difference < -180) {
-    difference += 360;
+
+  if (
+    difference <
+    -180
+  ) {
+
+    difference +=
+      360;
+
   }
+
 
   return difference;
+
 }
 
 
 /*
-  Creates a completely 2D arrow.
+  Create one floating
+  navigation arrow.
 */
 
 function createFloatingArrow(
@@ -737,54 +1036,101 @@ function createFloatingArrow(
       "button"
     );
 
+
   arrow.type =
     "button";
+
 
   arrow.className =
     "nav-arrow";
 
+
   arrow.innerHTML = `
+
     <svg
       class="arrow-svg"
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+
       <path
-        d="M20 3 L35 30 L26 26 L26 37 L14 37 L14 26 L5 30 Z"
+        d="
+          M20 3
+          L35 30
+          L26 26
+          L26 37
+          L14 37
+          L14 26
+          L5 30
+          Z
+        "
         fill="rgba(0,0,0,0.5)"
-        transform="translate(0.6,1.2)"
+        transform="
+          translate(0.6,1.2)
+        "
       />
 
       <path
-        d="M20 3 L35 30 L26 26 L26 37 L14 37 L14 26 L5 30 Z"
+        d="
+          M20 3
+          L35 30
+          L26 26
+          L26 37
+          L14 37
+          L14 26
+          L5 30
+          Z
+        "
         fill="#bf9b60"
       />
 
       <path
-        d="M20 3 L35 30 L26 26 L20 9 L14 26 L5 30 Z"
+        d="
+          M20 3
+          L35 30
+          L26 30
+          L20 9
+          L14 30
+          L5 30
+          Z
+        "
         fill="#d4ae72"
       />
 
       <path
-        d="M20 3 L35 30 L26 26 L26 37 L14 37 L14 26 L5 30 Z"
+        d="
+          M20 3
+          L35 30
+          L26 26
+          L26 37
+          L14 37
+          L14 26
+          L5 30
+          Z
+        "
         stroke="rgba(0,0,0,0.5)"
         stroke-width="1"
         stroke-linejoin="round"
         fill="none"
       />
+
     </svg>
 
     <div class="arrow-label">
       ${hotspot.text}
     </div>
+
   `;
+
 
   arrow.disabled =
     true;
 
+
   arrow.style.pointerEvents =
     "none";
+
 
   arrow.addEventListener(
     "click",
@@ -796,11 +1142,14 @@ function createFloatingArrow(
         return;
       }
 
+
       event.preventDefault();
 
       event.stopPropagation();
 
+
       registerUserInteraction();
+
 
       navigate(
         hotspot.target
@@ -809,12 +1158,15 @@ function createFloatingArrow(
     }
   );
 
+
   return arrow;
+
 }
 
 
 /*
-  Build the 2D arrow layer.
+  Build the floating
+  arrow layer.
 */
 
 function buildArrows(
@@ -827,15 +1179,19 @@ function buildArrows(
       "arrow-layer"
     );
 
+
   if (!layer) {
     return;
   }
 
+
   layer.innerHTML =
     "";
 
+
   arrowElements =
     [];
+
 
   if (arrowRafId) {
 
@@ -845,14 +1201,23 @@ function buildArrows(
 
     arrowRafId =
       null;
+
   }
+
 
   const hotspots =
-    scene.hotspots || [];
+    scene.hotspots ||
+    [];
 
-  if (!hotspots.length) {
+
+  if (
+    !hotspots.length
+  ) {
+
     return;
+
   }
+
 
   hotspots.forEach(
     hotspot => {
@@ -863,9 +1228,11 @@ function buildArrows(
           navigate
         );
 
+
       layer.appendChild(
         arrow
       );
+
 
       arrowElements.push({
         arrow,
@@ -875,21 +1242,25 @@ function buildArrows(
     }
   );
 
+
   updateFloatingArrows();
+
 }
 
 
 /*
-  Update ONLY using yaw.
+  Update arrows using
+  YAW ONLY.
 
-  No pitch.
-  No Pannellum hotspot positioning.
+  Pitch is deliberately
+  NOT used.
 */
 
 function updateFloatingArrows() {
 
   const viewer =
     activeViewer();
+
 
   if (!viewer) {
 
@@ -899,28 +1270,43 @@ function updateFloatingArrows() {
       );
 
     return;
+
   }
+
 
   let currentYaw =
     0;
 
+
   let hfov =
     100;
+
 
   try {
 
     currentYaw =
       viewer.getYaw();
 
+
     hfov =
       viewer.getHfov();
+
+
+    /*
+      Update our developer
+      yaw display.
+    */
+
+    updateYawDebugDisplay(
+      currentYaw
+    );
 
   } catch {}
 
 
   /*
-    Half the visible horizontal
-    field of view.
+    Half of visible
+    horizontal field of view.
   */
 
   const halfHfov =
@@ -939,6 +1325,7 @@ function updateFloatingArrows() {
           hotspot.yaw
         );
 
+
       const distance =
         Math.abs(
           difference
@@ -946,8 +1333,7 @@ function updateFloatingArrows() {
 
 
       /*
-        Determine horizontal
-        screen position.
+        Horizontal position.
 
         50% = centre.
 
@@ -975,14 +1361,6 @@ function updateFloatingArrows() {
 
       } else {
 
-        /*
-          Target is outside the
-          visible area.
-
-          Place arrow at the
-          appropriate edge.
-        */
-
         screenX =
           difference > 0
             ? 94
@@ -1008,11 +1386,8 @@ function updateFloatingArrows() {
       /*
         Opacity.
 
-        45°+ away:
+        ≥45° away:
           35%
-
-        Approaching target:
-          gradual increase
 
         ±5°:
           100%
@@ -1029,7 +1404,9 @@ function updateFloatingArrows() {
         opacity =
           ARROW_ACTIVE_OPACITY;
 
-      } else if (
+      }
+
+      else if (
         distance >=
         ARROW_FADE_RANGE
       ) {
@@ -1037,7 +1414,9 @@ function updateFloatingArrows() {
         opacity =
           ARROW_BASE_OPACITY;
 
-      } else {
+      }
+
+      else {
 
         const progress =
           (
@@ -1048,6 +1427,7 @@ function updateFloatingArrows() {
             ARROW_FADE_RANGE -
             ARROW_CLICK_RANGE
           );
+
 
         opacity =
           ARROW_BASE_OPACITY +
@@ -1061,11 +1441,13 @@ function updateFloatingArrows() {
 
 
       arrow.style.opacity =
-        opacity.toFixed(2);
+        opacity.toFixed(
+          2
+        );
 
 
       /*
-        Only ±5° is clickable.
+        ONLY ±5° is clickable.
       */
 
       const isActive =
@@ -1102,6 +1484,7 @@ function updateFloatingArrows() {
     requestAnimationFrame(
       updateFloatingArrows
     );
+
 }
 
 
@@ -1113,11 +1496,14 @@ export function resetViewer() {
 
   stopAutoRotate();
 
+
   userIsInteracting =
     false;
 
+
   currentScene =
     null;
+
 
   arrowElements =
     [];
@@ -1131,6 +1517,7 @@ export function resetViewer() {
 
     arrowRafId =
       null;
+
   }
 
 
@@ -1139,10 +1526,21 @@ export function resetViewer() {
       "arrow-layer"
     );
 
+
   if (arrowLayer) {
 
     arrowLayer.innerHTML =
       "";
+
+  }
+
+
+  if (yawDebugElement) {
+
+    yawDebugElement.remove();
+
+    yawDebugElement =
+      null;
 
   }
 

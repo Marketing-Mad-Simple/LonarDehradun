@@ -1,5 +1,4 @@
-
-import { PROPERTIES, getProperty } from "./properties.js";
+import { PROPERTIES } from "./properties.js";
 import {
   setActiveProperty,
   startProperty,
@@ -21,21 +20,47 @@ function showOnly(screen) {
   });
 }
 
+
+/* =====================================================
+   PROPERTY ORDER
+   ===================================================== */
+
+const PROPERTY_ORDER = [
+  "250 Sq. Yd.",
+  "500 Sq. Yd.",
+  "750 Sq. Yd.",
+  "1000 Sq. Yd."
+];
+
+
+/* =====================================================
+   BUILD PROPERTY SELECTOR
+   ===================================================== */
+
 function buildPropertySelector() {
   propertyGrid.innerHTML = "";
 
-  const sizes = [...new Set(PROPERTIES.map(property => property.size))];
+  const sizes = PROPERTY_ORDER.filter(size =>
+    PROPERTIES.some(property => property.size === size)
+  );
 
   sizes.forEach(size => {
-    const variants = PROPERTIES.filter(property => property.size === size);
+
+    const variants = PROPERTIES.filter(
+      property => property.size === size
+    );
 
     const button = document.createElement("button");
+
     button.className = "property-card";
     button.type = "button";
+
     button.innerHTML = `
       <div class="card-kicker">Property</div>
       <div class="card-title">${size}</div>
-      <div class="card-subtitle">${variants.length} variants available</div>
+      <div class="card-subtitle">
+        ${variants.length} variants available
+      </div>
     `;
 
     button.addEventListener("click", () => {
@@ -48,44 +73,85 @@ function buildPropertySelector() {
   });
 }
 
+
+/* =====================================================
+   BUILD VARIANT SELECTOR
+   ===================================================== */
+
 function buildVariantSelector(size) {
+
   variantPropertyLabel.textContent = size;
   variantGrid.innerHTML = "";
 
   PROPERTIES
     .filter(property => property.size === size)
     .forEach(property => {
+
       const button = document.createElement("button");
+
       button.className = "variant-card";
       button.type = "button";
+
       button.innerHTML = `
         <div class="card-kicker">${property.size}</div>
         <div class="card-title">${property.variant}</div>
         <div class="card-subtitle">
-          ${property.scenes.length ? `${property.scenes.length} scenes` : "Scenes will be added"}
+          ${
+            property.scenes.length
+              ? `${property.scenes.length} scenes`
+              : "Scenes will be added"
+          }
         </div>
       `;
 
       button.addEventListener("click", () => {
         setActiveProperty(property);
-        startProperty(property, () => showOnly(viewerScreen));
+        startProperty(
+          property,
+          () => showOnly(viewerScreen)
+        );
       });
 
       variantGrid.appendChild(button);
     });
 }
 
-document.getElementById("back-to-properties").addEventListener("click", () => {
-  selectedSize = null;
-  showOnly(propertyScreen);
-});
 
-document.getElementById("change-property").addEventListener("click", () => {
-  resetToPropertySelector(() => {
+/* =====================================================
+   BACK TO PROPERTY SELECTION
+   ===================================================== */
+
+document
+  .getElementById("back-to-properties")
+  .addEventListener("click", () => {
+
     selectedSize = null;
     showOnly(propertyScreen);
+
   });
-});
+
+
+/* =====================================================
+   CHANGE PROPERTY FROM VIEWER
+   ===================================================== */
+
+document
+  .getElementById("change-property")
+  .addEventListener("click", () => {
+
+    resetToPropertySelector(() => {
+
+      selectedSize = null;
+      showOnly(propertyScreen);
+
+    });
+
+  });
+
+
+/* =====================================================
+   INITIALISE
+   ===================================================== */
 
 buildPropertySelector();
 showOnly(propertyScreen);

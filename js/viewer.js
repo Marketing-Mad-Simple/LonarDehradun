@@ -1210,9 +1210,26 @@ function buildArrows(
     [];
 
 
+  /*
+    IMPORTANT:
+    Even scenes without hotspots
+    need the animation loop when
+    YAW DEBUG MODE is active.
+
+    This allows us to collect yaw
+    coordinates for new properties
+    before their hotspots exist.
+  */
+
   if (
     !hotspots.length
   ) {
+
+    if (YAW_DEBUG_MODE) {
+
+      updateFloatingArrows();
+
+    }
 
     return;
 
@@ -1387,10 +1404,10 @@ function updateFloatingArrows() {
         Opacity.
 
         ≥45° away:
-          35%
+        35%
 
         ±5°:
-          100%
+        100%
       */
 
       let opacity;
